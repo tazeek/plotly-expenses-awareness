@@ -14,6 +14,7 @@ class ExpenseHandler:
 		self._expenses_df = expenses_df
 		self.fillZeroExpenseDates()
 		self.fillMonthNumber()
+		self.fillDayName()
 
 	def getExpenseDF(self):
 
@@ -55,6 +56,14 @@ class ExpenseHandler:
 		month_number = [date.month for date in expenses_df['date']]
 
 		self._expenses_df = expenses_df.assign(month = month_number)
+
+	def fillDayName(self):
+
+		expenses_df = self._expenses_df
+
+		day_number_week = [date.weekday() for date in expenses_df['date']]
+
+		self.expenses_df = expenses_df.assign(day = day_number_week)
 
 	def annualCosts(self,period):
 
