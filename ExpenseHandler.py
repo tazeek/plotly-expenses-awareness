@@ -51,4 +51,11 @@ class ExpenseHandler:
 		month_number = [date.month for date in expenses_df['date']]
 
 		self._expenses_df = expenses_df.assign(month = month_number)
+
+	def costsPerDay(self):
+
+		costs_df = self._expenses_df[['date','cost']].copy()
+		return costs_df.groupby(['date']).sum().reset_index()
+
+
 		
