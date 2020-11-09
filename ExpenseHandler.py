@@ -92,5 +92,14 @@ class ExpenseHandler:
 
 		return days_df.sort_values('cost', ascending=False)
 
+	def getExpenseAndNonExpense(self):
+
+		expenses_df = self._expenses_df
+
+		non_expenses_count = len(expenses_df[expenses_df['category'] != 'zero expenses'])
+		expenses_count = len(expenses_df) - non_expenses_count
+
+		return non_expenses_count, expenses_count
+
 
 		
