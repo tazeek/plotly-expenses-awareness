@@ -61,11 +61,11 @@ class ExpenseHandler:
 
 		expenses_df = self._expenses_df
 
-		day_number_week = [date.weekday() for date in expenses_df['date']]
+		day_number_week = [calendar.day_name[date.weekday()] for date in expenses_df['date']]
 
-		self.expenses_df = expenses_df.assign(day = day_number_week)
+		self._expenses_df = expenses_df.assign(day = day_number_week)
 
-	def annualCosts(self,period):
+	def annualCostsPeriod(self,period):
 
 		# It is either weekly or monthly
 		annual_costs_df = self._expenses_df[[period,'cost']].copy()
@@ -83,6 +83,14 @@ class ExpenseHandler:
 		category_counts_ser = expenses_df['category'].value_counts()
 
 		return category_counts_ser.keys(), category_counts_ser.values
+
+	def accumulativeDayCosts(self):
+
+		days_df = self._expenses_df[['day','cost']].copy()
+
+		days_df = days_df.groupby('day')['cost'].sum().reset_index()
+
+		return days_df.sort_values('cost', ascending=False)
 
 
 		
