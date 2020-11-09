@@ -56,6 +56,17 @@ class ExpenseHandler:
 
 		self._expenses_df = expenses_df.assign(month = month_number)
 
+	def annualCosts(self,period):
+
+		# It is either weekly or monthly
+		annual_costs_df = self._expenses_df[[period,'cost']].copy()
+		annual_costs_df = annual_costs_df.groupby([period]).sum().reset_index()
+
+		if period == 'month':
+			annual_costs_df['month'] =  [calendar.month_name[month_number] for month_number in annual_costs_df['month']]
+
+		return annual_costs_df
+
 	def costsPerDay(self):
 
 		daily_costs_df = self._expenses_df[['date','cost']].copy()
