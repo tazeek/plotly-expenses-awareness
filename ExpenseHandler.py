@@ -1,6 +1,8 @@
 import pandas as pd
 from datetime import datetime
 
+import calendar
+
 class ExpenseHandler:
 
 	def __init__(self):
@@ -10,6 +12,8 @@ class ExpenseHandler:
 		expenses_df['date'] = pd.to_datetime(expenses_df['date'])
 
 		self._expenses_df = expenses_df
+		self.fillZeroExpenseDates()
+		self.fillMonthNumber()
 
 	def getExpenseDF(self):
 
@@ -54,8 +58,16 @@ class ExpenseHandler:
 
 	def costsPerDay(self):
 
-		costs_df = self._expenses_df[['date','cost']].copy()
-		return costs_df.groupby(['date']).sum().reset_index()
+		daily_costs_df = self._expenses_df[['date','cost']].copy()
+		return daily_costs_df.groupby(['date']).sum().reset_index()
+
+	def costsPerMonth(self):
+
+		monthly_costs_df = self._expenses_df[['month','cost']].copy()
+		monthly_costs_df = monthly_costs_df.groupby(['month']).sum().reset_index()
+		monthly_costs_df['month'] = [calendar.month_name[month_number] for month_number in monthly_costs_df['month']]
+
+		return monthly_costs_df
 
 
 		
