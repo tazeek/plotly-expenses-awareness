@@ -67,18 +67,13 @@ class ExpenseHandler:
 
 		return annual_costs_df
 
-	def costsPerDay(self):
+	def categoryCounts(self):
 
-		daily_costs_df = self._expenses_df[['date','cost']].copy()
-		return daily_costs_df.groupby(['date']).sum().reset_index()
+		expenses_df = self._expenses_df
 
-	def costsPerMonth(self):
+		category_counts_ser = expenses_df['category'].value_counts()
 
-		monthly_costs_df = self._expenses_df[['month','cost']].copy()
-		monthly_costs_df = monthly_costs_df.groupby(['month']).sum().reset_index()
-		monthly_costs_df['month'] = [calendar.month_name[month_number] for month_number in monthly_costs_df['month']]
-
-		return monthly_costs_df
+		return category_counts_ser.keys(), category_counts_ser.values
 
 
 		
