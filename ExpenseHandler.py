@@ -43,3 +43,12 @@ class ExpenseHandler:
 		expenses_df.reset_index(drop=True,inplace=True)
 
 		self._expenses_df = expenses_df
+
+	def fillMonthNumber(self):
+
+		expenses_df = self._expenses_df
+
+		month_number = [date.month for date in expenses_df['date']]
+
+		self._expenses_df = expenses_df.assign(month = month_number)
+		
