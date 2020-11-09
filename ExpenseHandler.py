@@ -14,6 +14,7 @@ class ExpenseHandler:
 		self._expenses_df = expenses_df
 		self.fillZeroExpenseDates()
 		self.fillMonthNumber()
+		self.fillDayName()
 
 	def getExpenseDF(self):
 
@@ -56,7 +57,15 @@ class ExpenseHandler:
 
 		self._expenses_df = expenses_df.assign(month = month_number)
 
-	def annualCosts(self,period):
+	def fillDayName(self):
+
+		expenses_df = self._expenses_df
+
+		day_number_week = [calendar.day_name[date.weekday()] for date in expenses_df['date']]
+
+		self._expenses_df = expenses_df.assign(day = day_number_week)
+
+	def annualCostsPeriod(self,period):
 
 		# It is either weekly or monthly
 		annual_costs_df = self._expenses_df[[period,'cost']].copy()
@@ -74,6 +83,23 @@ class ExpenseHandler:
 		category_counts_ser = expenses_df['category'].value_counts()
 
 		return category_counts_ser.keys(), category_counts_ser.values
+
+	def accumulativeDayCosts(self):
+
+		days_df = self._expenses_df[['day','cost']].copy()
+
+		days_df = days_df.groupby('day')['cost'].sum().reset_index()
+
+		return days_df.sort_values('cost', ascending=False)
+
+	def getExpenseAndNonExpense(self):
+
+		expenses_df = self._expenses_df
+
+		non_expenses_count = len(expenses_df[expenses_df['category'] != 'zero expenses'])
+		expenses_count = len(expenses_df) - non_expenses_count
+
+		return non_expenses_count, expenses_count
 
 
 		
