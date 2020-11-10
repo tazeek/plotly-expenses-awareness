@@ -84,14 +84,6 @@ class ExpenseHandler:
 
 		return category_counts_ser.keys(), category_counts_ser.values
 
-	def accumulativeDayCosts(self):
-
-		days_df = self._expenses_df[['day','cost']].copy()
-
-		days_df = days_df.groupby('day')['cost'].sum().reset_index()
-
-		return days_df.sort_values('cost', ascending=False)
-
 	def getExpenseAndNonExpense(self):
 
 		expenses_df = self._expenses_df
