@@ -18,7 +18,7 @@ class ExpenseHandler:
 
 	def getExpenseDF(self):
 
-		return self._expenses_df
+		return self._expenses_df.copy()
 
 	def _zeroExpenseHelper(self,date):
 		return {
