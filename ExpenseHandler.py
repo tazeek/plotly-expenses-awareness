@@ -101,5 +101,11 @@ class ExpenseHandler:
 
 		return non_expenses_count, expenses_count
 
+	def getDailyAverage(self):
 
+		expense_df = self._expenses_df[['day','cost']].copy()
+
+		expense_df = expense_df.groupby(['date','day']).sum().reset_index()
+
+		return expense_df
 		
