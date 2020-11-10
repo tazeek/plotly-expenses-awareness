@@ -18,7 +18,7 @@ class ExpenseHandler:
 
 	def getExpenseDF(self):
 
-		return self._expenses_df
+		return self._expenses_df.copy()
 
 	def _zeroExpenseHelper(self,date):
 		return {
@@ -100,4 +100,15 @@ class ExpenseHandler:
 		expenses_count = len(expenses_df) - non_expenses_count
 
 		return non_expenses_count, expenses_count
-		
+
+	def getDailyAverage(self):
+
+		expense_df = self._expenses_df[['date','day','cost']].copy()
+
+		# First groupby: sum up all the expenses per date
+		expense_df = expense_df.groupby(['date','day']).sum().reset_index()
+
+		# Second groupby: find the average per day
+		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
+
+		return expense_df.sort_values('cost',ascending=False)
