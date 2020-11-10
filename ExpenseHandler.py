@@ -100,6 +100,4 @@ class ExpenseHandler:
 		expenses_count = len(expenses_df) - non_expenses_count
 
 		return non_expenses_count, expenses_count
-
-
 		
