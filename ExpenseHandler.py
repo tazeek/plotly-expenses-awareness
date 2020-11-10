@@ -68,11 +68,16 @@ class ExpenseHandler:
 	def annualCostsPeriod(self,period):
 
 		# It is either weekly or monthly
-		annual_costs_df = self._expenses_df[[period,'cost']].copy()
-		annual_costs_df = annual_costs_df.groupby([period]).sum().reset_index()
+		annual_costs_df = self._expenses_df[[period,'day','cost']].copy()
 
 		if period == 'month':
+
+			annual_costs_df = annual_costs_df.groupby([period]).sum().reset_index()
 			annual_costs_df['month'] =  [calendar.month_name[month_number] for month_number in annual_costs_df['month']]
+
+		elif period == 'date':
+
+			annual_costs_df = annual_costs_df.groupby([period,'day']).sum().reset_index()
 
 		return annual_costs_df
 
@@ -95,10 +100,7 @@ class ExpenseHandler:
 
 	def getDailyAverage(self):
 
-		expense_df = self._expenses_df[['date','day','cost']].copy()
-
-		# First groupby: sum up all the expenses per date
-		expense_df = expense_df.groupby(['date','day']).sum().reset_index()
+		expense_df = self.annualCostsPeriod('date')
 
 		# Second groupby: find the average per day
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
