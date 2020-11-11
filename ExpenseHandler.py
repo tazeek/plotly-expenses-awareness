@@ -93,7 +93,7 @@ class ExpenseHandler:
 
 		expenses_df = self._expenses_df
 
-		non_expenses_count = len(expenses_df[expenses_df['category'] != 'zero expenses'])
+		non_expenses_count = len(expenses_df.query('category != "zero expenses"'))
 		expenses_count = len(expenses_df) - non_expenses_count
 
 		return non_expenses_count, expenses_count
