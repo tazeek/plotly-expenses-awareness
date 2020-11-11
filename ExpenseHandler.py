@@ -106,3 +106,11 @@ class ExpenseHandler:
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
 
 		return expense_df.sort_values('cost',ascending=False)
+
+	def getAllExpenses(self):
+
+		expenses_df = self._expenses_df[['category','cost']]
+
+		expenses_df = expenses_df.groupby(['category']).sum().reset_index()
+
+		return expenses_df
