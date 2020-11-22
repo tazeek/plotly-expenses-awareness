@@ -100,7 +100,7 @@ class ExpenseHandler:
 
 	def get_day_average(self):
 
-		expense_df = self.annualCostsPeriod('date')
+		expense_df = self.get_total_costs('date')
 
 		# Second groupby: find the average per day
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
@@ -117,7 +117,7 @@ class ExpenseHandler:
 
 	def calculate_moving_average(self):
 
-		expense_df = self.annualCostsPeriod('date')
+		expense_df = self.get_total_costs('date')
 
 		expense_df['moving_average'] = expense_df['cost'].expanding().mean()
 
