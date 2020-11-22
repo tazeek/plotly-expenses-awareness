@@ -117,8 +117,9 @@ class ExpenseHandler:
 
 	def calculate_moving_average(self):
 
-		expense_df = self._expenses_df.copy()
+		expense_df = self.annualCostsPeriod('date')
 
-		expense_df['moving_average'] = expense_df.groupby('date')['cost'].expanding().mean().values
+		expense_df['moving_total'] = expense_df.cost.cumsum()
+		#expense_df['moving_average'] = expense_df.groupby('date')['cost'].expanding().mean().values
 
 		return expense_df
