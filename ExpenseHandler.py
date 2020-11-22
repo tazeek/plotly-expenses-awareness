@@ -81,7 +81,7 @@ class ExpenseHandler:
 
 		return annual_costs_df
 
-	def categoryCounts(self):
+	def get_category_counts(self):
 
 		expenses_df = self._expenses_df
 
@@ -89,7 +89,7 @@ class ExpenseHandler:
 
 		return category_counts_ser.keys(), category_counts_ser.values
 
-	def getExpenseAndNonExpense(self):
+	def count_expense_and_non_expense(self):
 
 		expenses_df = self._expenses_df
 
@@ -98,7 +98,7 @@ class ExpenseHandler:
 
 		return non_expenses_count, expenses_count
 
-	def getDailyAverage(self):
+	def get_day_average(self):
 
 		expense_df = self.annualCostsPeriod('date')
 
@@ -107,7 +107,7 @@ class ExpenseHandler:
 
 		return expense_df.sort_values('cost',ascending=False)
 
-	def getAllExpenses(self):
+	def count_all_category_expenses(self):
 
 		expenses_df = self._expenses_df[['category','cost']]
 
