@@ -17,10 +17,25 @@ class ExpenseHandler:
 		self._fill_day_name()
 
 	def get_expense_df(self):
+		""" Returns a copy of the expense dataframe attribute"""
 
 		return self._expenses_df.copy()
 
 	def _get_zero_expense_dict(self,date):
+		"""Helper function for filling in zero expense dates
+		
+		Parameters
+		----------
+		date: date
+			Date at which there were no expenses
+
+		Returns
+		----------
+		dictionary
+			Dictionary detailing the zero expense date
+
+		"""
+
 		return {
 			'date': date,
 			'category': 'zero expenses',
