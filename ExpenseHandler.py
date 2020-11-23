@@ -44,13 +44,14 @@ class ExpenseHandler:
 		}
 
 	def _fill_zero_expense_dates(self):
+		"""Fill out dates when there were no expenses"""
 
 		expenses_df = self._expenses_df
 
 		earliest_date = expenses_df['date'].iloc[0].date()
 		today_date = datetime.now().date()
 
-		# Find the days when there were no expenses
+		# Find the dates when there were no expenses
 		date_range_df = pd.date_range(start=earliest_date, end=today_date)
 		zero_expense_dates = date_range_df.difference(expenses_df['date'])
 
@@ -65,6 +66,7 @@ class ExpenseHandler:
 		self._expenses_df = expenses_df
 
 	def _fill_month_number(self):
+		"""Add new column that contains the month number"""
 
 		expenses_df = self._expenses_df
 
@@ -73,6 +75,7 @@ class ExpenseHandler:
 		self._expenses_df = expenses_df.assign(month = month_number)
 
 	def _fill_day_name(self):
+		"""Add new column that contains the day number of the week"""
 
 		expenses_df = self._expenses_df
 
@@ -81,8 +84,20 @@ class ExpenseHandler:
 		self._expenses_df = expenses_df.assign(day = day_number_week)
 
 	def get_total_costs(self,period):
+		""" Return the total expenses amongst a period of time
 
-		# It is either weekly or monthly
+		Parameters
+		----------
+		period: str
+			Choose either 'date' (daily) or 'month' (monthly)
+
+		Returns
+		----------
+		DataFrame
+			Contains the grouped costs, based on the period
+
+		"""
+
 		annual_costs_df = self._expenses_df[[period,'day','cost']].copy()
 
 		if period == 'month':
@@ -97,6 +112,7 @@ class ExpenseHandler:
 		return annual_costs_df
 
 	def get_category_counts(self):
+		"""Return the total counts of category of expenses"""
 
 		expenses_df = self._expenses_df
 
@@ -105,6 +121,7 @@ class ExpenseHandler:
 		return category_counts_ser.keys(), category_counts_ser.values
 
 	def count_expense_and_non_expense(self):
+		"""Return a count of total number of expense and non-expense occurrences"""
 
 		expenses_df = self._expenses_df
 
@@ -114,15 +131,16 @@ class ExpenseHandler:
 		return non_expenses_count, expenses_count
 
 	def get_day_average(self):
+		"""Return the average expenses per day"""
 
 		expense_df = self.get_total_costs('date')
 
-		# Second groupby: find the average per day
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
 
 		return expense_df.sort_values('cost',ascending=False)
 
 	def count_all_category_expenses(self):
+		"""Return the total amount of expenses per category"""
 
 		expenses_df = self._expenses_df[['category','cost']]
 
@@ -131,6 +149,7 @@ class ExpenseHandler:
 		return expenses_df
 
 	def calculate_moving_average(self):
+		"""Find the dynamic average over time"""
 
 		expense_df = self.get_total_costs('date')
 
