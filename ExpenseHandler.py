@@ -12,15 +12,15 @@ class ExpenseHandler:
 		expenses_df['date'] = pd.to_datetime(expenses_df['date'])
 
 		self._expenses_df = expenses_df
-		self.fillZeroExpenseDates()
-		self.fillMonthNumber()
-		self.fillDayName()
+		self._fill_zero_expense_dates()
+		self._fill_month_number()
+		self._fill_day_name()
 
-	def getExpenseDF(self):
+	def get_expense_df(self):
 
 		return self._expenses_df.copy()
 
-	def _zeroExpenseHelper(self,date):
+	def _get_zero_expense_dict(self,date):
 		return {
 			'date': date,
 			'category': 'zero expenses',
@@ -28,7 +28,7 @@ class ExpenseHandler:
 			'cost': 0.00
 		}
 
-	def fillZeroExpenseDates(self):
+	def _fill_zero_expense_dates(self):
 
 		expenses_df = self._expenses_df
 
@@ -40,7 +40,7 @@ class ExpenseHandler:
 		zero_expense_dates = date_range_df.difference(expenses_df['date'])
 
 		zero_expense_dict_list = [
-			self._zeroExpenseHelper(date) for date in zero_expense_dates
+			self._get_zero_expense_dict(date) for date in zero_expense_dates
 		]
 
 		expenses_df = expenses_df.append(zero_expense_dict_list, ignore_index=True)
@@ -49,7 +49,7 @@ class ExpenseHandler:
 
 		self._expenses_df = expenses_df
 
-	def fillMonthNumber(self):
+	def _fill_month_number(self):
 
 		expenses_df = self._expenses_df
 
@@ -57,7 +57,7 @@ class ExpenseHandler:
 
 		self._expenses_df = expenses_df.assign(month = month_number)
 
-	def fillDayName(self):
+	def _fill_day_name(self):
 
 		expenses_df = self._expenses_df
 
@@ -65,7 +65,7 @@ class ExpenseHandler:
 
 		self._expenses_df = expenses_df.assign(day = day_number_week)
 
-	def annualCostsPeriod(self,period):
+	def get_total_costs(self,period):
 
 		# It is either weekly or monthly
 		annual_costs_df = self._expenses_df[[period,'day','cost']].copy()
@@ -81,7 +81,7 @@ class ExpenseHandler:
 
 		return annual_costs_df
 
-	def categoryCounts(self):
+	def get_category_counts(self):
 
 		expenses_df = self._expenses_df
 
@@ -89,7 +89,7 @@ class ExpenseHandler:
 
 		return category_counts_ser.keys(), category_counts_ser.values
 
-	def getExpenseAndNonExpense(self):
+	def count_expense_and_non_expense(self):
 
 		expenses_df = self._expenses_df
 
@@ -98,16 +98,16 @@ class ExpenseHandler:
 
 		return non_expenses_count, expenses_count
 
-	def getDailyAverage(self):
+	def get_day_average(self):
 
-		expense_df = self.annualCostsPeriod('date')
+		expense_df = self.get_total_costs('date')
 
 		# Second groupby: find the average per day
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
 
 		return expense_df.sort_values('cost',ascending=False)
 
-	def getAllExpenses(self):
+	def count_all_category_expenses(self):
 
 		expenses_df = self._expenses_df[['category','cost']]
 
@@ -117,7 +117,7 @@ class ExpenseHandler:
 
 	def calculate_moving_average(self):
 
-		expense_df = self.annualCostsPeriod('date')
+		expense_df = self.get_total_costs('date')
 
 		expense_df['moving_average'] = expense_df['cost'].expanding().mean()
 
