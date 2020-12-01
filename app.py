@@ -17,7 +17,7 @@ def initialize_app(app):
 		go.Scatter(
 			x=costs_df['date'],
 			y=costs_df['cost'],
-			mode='lines+markets'
+			mode='lines+markers'
 		)
 	])
 
@@ -32,7 +32,7 @@ def initialize_app(app):
 
 if __name__ == '__main__':
 
-	app = Dash.dash()
+	app = dash.Dash()
 
 	initialize_app(app)
 
