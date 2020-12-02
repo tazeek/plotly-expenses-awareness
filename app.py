@@ -37,7 +37,8 @@ def initialize_app(app):
 	monthly_expense_fig.update_xaxes(rangeslider_visible=True)
 
 	app.layout = html.Div([
-		dcc.Graph(id='daily-expense-total',figure=daily_expense_fig)
+		dcc.Graph(id='daily-expense-total',figure=daily_expense_fig),
+		dcc.Graph(id='monthly-expense-total',figure=monthly_expense_fig)
 	])
 
 	return None
