@@ -10,19 +10,31 @@ def initialize_app(app):
 
 	expenses_obj = ExpenseHandler()
 
-	# Time series plot by day
-	costs_df = expenses_obj.get_total_costs('date')
+	# Time series plot by day and month
+	daily_costs_df = expenses_obj.get_total_costs('date')
+	monthly_costs_df = expenses_obj.get_total_costs('month')
 
 	daily_expense_fig = go.Figure([
 		go.Scatter(
-			x=costs_df['date'],
-			y=costs_df['cost'],
+			x=daily_costs_df['date'],
+			y=daily_costs_df['cost'],
+			mode='lines+markers'
+		)
+	])
+
+	monthly_expense_fig = go.Figure([
+		go.Scatter(
+			x=monthly_costs_df['month'],
+			y=monthly_costs_df['cost'],
 			mode='lines+markers'
 		)
 	])
 
 	daily_expense_fig.update_layout(title_text='Overview of expenses (Daily)')
 	daily_expense_fig.update_xaxes(rangeslider_visible=True)
+
+	monthly_expense_fig.update_layout(title_text='Overview of expenses (Monthly)')
+	monthly_expense_fig.update_xaxes(rangeslider_visible=True)
 
 	app.layout = html.Div([
 		dcc.Graph(id='daily-expense-total',figure=daily_expense_fig)
