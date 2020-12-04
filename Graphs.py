@@ -10,9 +10,7 @@ class Graphs:
 
 	def get_daily_expenses_total(self):
 
-		expense_obj = self._expense_obj
-
-		daily_costs_df = expenses_obj.get_total_costs('date')
+		daily_costs_df = self._expense_obj.get_total_costs('date')
 
 		daily_expense_fig = go.Figure([
 			go.Scatter(
@@ -28,3 +26,18 @@ class Graphs:
 		return daily_expense_fig
 
 	def get_monthly_expenses_total(self):
+
+		monthly_costs_df = self._expense_obj.get_total_costs('month')
+
+		monthly_expense_fig = go.Figure([
+			go.Scatter(
+				x=monthly_costs_df['month'],
+				y=monthly_costs_df['cost'],
+				mode='lines+markers'
+			)
+		])
+
+		monthly_expense_fig.update_layout(title_text='Overview of expenses (Monthly)')
+		monthly_expense_fig.update_xaxes(rangeslider_visible=True)
+
+		return monthly_expense_fig
