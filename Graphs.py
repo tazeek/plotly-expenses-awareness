@@ -8,7 +8,7 @@ class Graphs:
 
 		self._expense_obj = ExpenseHandler()
 
-	def get_daily_expenses_total(self):
+	def get_daily_expenses_fig(self):
 
 		daily_costs_df = self._expense_obj.get_total_costs('date')
 
@@ -25,7 +25,7 @@ class Graphs:
 
 		return daily_expense_fig
 
-	def get_monthly_expenses_total(self):
+	def get_monthly_expenses_fig(self):
 
 		monthly_costs_df = self._expense_obj.get_total_costs('month')
 
