@@ -42,7 +42,7 @@ class Graphs:
 
 		return fig
 
-	def get_day_averages(self):
+	def get_day_averages_fig(self):
 
 		days_avg_df = self._expenses_obj.get_day_average()
 
