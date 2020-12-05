@@ -12,7 +12,7 @@ class Graphs:
 
 		daily_costs_df = self._expense_obj.get_total_costs('date')
 
-		daily_expense_fig = go.Figure([
+		fig = go.Figure([
 			go.Scatter(
 				x=daily_costs_df['date'],
 				y=daily_costs_df['cost'],
@@ -20,16 +20,16 @@ class Graphs:
 			)
 		])
 
-		daily_expense_fig.update_layout(title_text='Overview of expenses (Daily)')
-		daily_expense_fig.update_xaxes(rangeslider_visible=True)
+		fig.update_layout(title_text='Overview of expenses (Daily)')
+		fig.update_xaxes(rangeslider_visible=True)
 
-		return daily_expense_fig
+		return fig
 
 	def get_monthly_expenses_fig(self):
 
 		monthly_costs_df = self._expense_obj.get_total_costs('month')
 
-		monthly_expense_fig = go.Figure([
+		fig = go.Figure([
 			go.Scatter(
 				x=monthly_costs_df['month'],
 				y=monthly_costs_df['cost'],
@@ -37,7 +37,23 @@ class Graphs:
 			)
 		])
 
-		monthly_expense_fig.update_layout(title_text='Overview of expenses (Monthly)')
-		monthly_expense_fig.update_xaxes(rangeslider_visible=True)
+		fig.update_layout(title_text='Overview of expenses (Monthly)')
+		fig.update_xaxes(rangeslider_visible=True)
 
-		return monthly_expense_fig
+		return fig
+
+	def get_day_averages_fig(self):
+
+		days_avg_df = self._expense_obj.get_day_average()
+
+		fig = go.Figure([go.Bar(x=days_avg_df['day'], y=days_avg_df['cost'])])
+
+		fig.update_layout(
+			title='Average expenses (Day-to-day)',
+			yaxis=dict(title='Average'),
+			xaxis=dict(title='Day'),
+			width=800,
+			height=600
+		)
+
+		return fig
