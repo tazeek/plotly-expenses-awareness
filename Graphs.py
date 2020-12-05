@@ -41,3 +41,19 @@ class Graphs:
 		monthly_expense_fig.update_xaxes(rangeslider_visible=True)
 
 		return monthly_expense_fig
+
+	def get_day_averages(self):
+
+		days_avg_df = self._expenses_obj.get_day_average()
+
+		fig = go.Figure([go.Bar(x=days_avg_df['day'], y=days_avg_df['cost'])])
+
+		fig.update_layout(
+			title='Average expenses (Day-to-day)',
+			yaxis=dict(title='Average'),
+			xaxis=dict(title='Day'),
+			width=800,
+			height=600
+		)
+
+		return fig
