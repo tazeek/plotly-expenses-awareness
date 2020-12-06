@@ -157,9 +157,14 @@ class ExpenseHandler:
 
 		return expense_df
 
-	def filter_expenses_dates(self,days):
+	def filter_expenses_dates(self,num_days):
 
 		expense_df = self.get_total_costs('date')
+		expense_df = expense_df.set_index('date')
+		expense_df= expense_df.sort_index()
+
+		last_day = pd.to_datetime()
+		expense_df = expense_df.loc[last_day - pd.Timedelta(days=num_days):last_day].reset_index()
 
 		return expense_df
 
