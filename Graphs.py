@@ -57,3 +57,20 @@ class Graphs:
 		)
 
 		return fig
+
+	def get_last_days_expenses(self):
+
+		df = self._expense_obj.filter_expenses_dates(30)
+
+		fig = go.Figure([
+			go.Scatter(
+				x=df['date'],
+				y=df['cost'],
+				mode='lines+markers'
+			)
+		])
+
+		fig.update_layout(title_text='Overview of expenses (Last 30 days)')
+		fig.update_xaxes(rangeslider_visible=True)
+
+		return fig
