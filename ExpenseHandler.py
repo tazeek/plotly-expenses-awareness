@@ -156,3 +156,10 @@ class ExpenseHandler:
 		expense_df['moving_average'] = expense_df['cost'].expanding().mean()
 
 		return expense_df
+
+	def filter_expenses_dates(self,days):
+
+		expense_df = self.get_total_costs('date')
+
+		return expense_df
+
