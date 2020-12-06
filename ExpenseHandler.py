@@ -163,7 +163,7 @@ class ExpenseHandler:
 		expense_df = expense_df.set_index('date')
 		expense_df= expense_df.sort_index()
 
-		last_day = pd.to_datetime()
+		last_day = pd.to_datetime('today')
 		expense_df = expense_df.loc[last_day - pd.Timedelta(days=num_days):last_day].reset_index()
 
 		return expense_df
