@@ -38,7 +38,6 @@ class Graphs:
 		])
 
 		fig.update_layout(title_text='Overview of expenses (Monthly)')
-		fig.update_xaxes(rangeslider_visible=True)
 
 		return fig
 
@@ -71,6 +70,5 @@ class Graphs:
 		])
 
 		fig.update_layout(title_text='Overview of expenses (Last 30 days)')
-		fig.update_xaxes(rangeslider_visible=True)
 
 		return fig
