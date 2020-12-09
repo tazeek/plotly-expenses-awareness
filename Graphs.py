@@ -58,9 +58,9 @@ class Graphs:
 
 		return fig
 
-	def get_last_days_expenses(self):
+	def get_last_days_expenses(self, last_n_days):
 
-		df = self._expense_obj.filter_expenses_dates(30)
+		df = self._expense_obj.filter_expenses_dates(last_n_days)
 
 		fig = go.Figure([
 			go.Scatter(
