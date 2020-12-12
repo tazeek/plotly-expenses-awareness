@@ -78,3 +78,19 @@ class Graphs:
 		)
 
 		return fig
+
+	def load_dynamic_average(self):
+
+		df = self._expense_obj.calculate_moving_average()
+
+		fig = go.Figure([
+			go.Scatter(
+				x=df['date'],
+				y=df['moving_average'],
+				mode='lines+markers'
+			)
+		])
+
+		fig.update_layout(title_text='Cumulative Average (By Day)')
+
+		return fig
