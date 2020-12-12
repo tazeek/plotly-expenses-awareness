@@ -1,5 +1,7 @@
 from ExpenseHandler import ExpenseHandler
 
+from string import Template
+
 import plotly.graph_objects as go
 
 class Graphs:
@@ -38,7 +40,6 @@ class Graphs:
 		])
 
 		fig.update_layout(title_text='Overview of expenses (Monthly)')
-		fig.update_xaxes(rangeslider_visible=True)
 
 		return fig
 
@@ -58,9 +59,11 @@ class Graphs:
 
 		return fig
 
-	def get_last_days_expenses(self):
+	def get_last_days_expenses(self, last_n_days):
 
-		df = self._expense_obj.filter_expenses_dates(30)
+		df = self._expense_obj.filter_expenses_dates(last_n_days)
+
+		template_str_obj = Template('Overview of expenses (Last $n days)')
 
 		fig = go.Figure([
 			go.Scatter(
@@ -70,8 +73,9 @@ class Graphs:
 			)
 		])
 
-		fig.update_layout(title_text='Overview of expenses (Last 30 days)')
-		fig.update_xaxes(rangeslider_visible=True)
+		fig.update_layout(
+			title_text=template_str_obj.substitute(n=last_n_days)
+		)
 
 		return fig
 
