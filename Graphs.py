@@ -74,3 +74,9 @@ class Graphs:
 		fig.update_xaxes(rangeslider_visible=True)
 
 		return fig
+
+	def load_dynamic_average(self):
+
+		df = self._expense_obj.calculate_moving_average()
+
+		
