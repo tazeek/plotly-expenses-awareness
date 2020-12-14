@@ -74,7 +74,12 @@ class Graphs:
 		])
 
 		fig.update_layout(
-			title_text=template_str_obj.substitute(n=last_n_days)
+			title_text=template_str_obj.substitute(n=last_n_days),
+			transition = 
+				{
+					'duration': 2000,
+					'easing': 'cubic-in-out'
+				}
 		)
 
 		return fig
