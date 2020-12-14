@@ -4,13 +4,11 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 
-app = dash.Dash()
-
 def initialize_app(app):
 
 	graphs_obj = Graphs()
 
-	app.layout = html.Div([
+	return html.Div([
 
 		dcc.RadioItems(options=[
 				{'label':'Last 7 days', 'value':7},
@@ -28,7 +26,8 @@ def initialize_app(app):
 		dcc.Graph(id='dynamic-moving-average',figure=graphs_obj.load_dynamic_average())
 	])
 
-	return None
+app = dash.Dash()
+app.layout = initialize_app
 
 if __name__ == '__main__':
 
