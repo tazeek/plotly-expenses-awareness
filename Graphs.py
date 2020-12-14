@@ -78,7 +78,7 @@ class Graphs:
 			transition = 
 				{
 					'duration': 2000,
-					 'easing': 'cubic-in-out'
+					'easing': 'cubic-in-out'
 				}
 		)
 
