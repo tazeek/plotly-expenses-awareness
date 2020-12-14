@@ -4,11 +4,22 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 
+app = dash.Dash()
+
 def initialize_app(app):
 
 	graphs_obj = Graphs()
 
 	app.layout = html.Div([
+
+		dcc.RadioItems(options=[
+				{'label':'Last 7 days', 'value':7},
+				{'label':'Last 30 days', 'value':30}
+			],
+			value=7,
+			labelStyle={'display':'inline-block'}
+		),
+
 		dcc.Graph(id='last-7days-figure',figure=graphs_obj.get_last_days_expenses(7)),
 		dcc.Graph(id='last-30days-figure',figure=graphs_obj.get_last_days_expenses(30)),
 		dcc.Graph(id='daily-expense-figure',figure=graphs_obj.get_daily_expenses_fig()),
@@ -20,8 +31,6 @@ def initialize_app(app):
 	return None
 
 if __name__ == '__main__':
-
-	app = dash.Dash()
 
 	initialize_app(app)
 
