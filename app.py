@@ -12,19 +12,18 @@ def initialize_app():
 
 	return html.Div([
 
-		dcc.RadioItems(
+		dcc.Dropdown(
 			id='filter-days',
 			options=[
 				{'label':'Last 7 days', 'value':7},
-				{'label':'Last 30 days', 'value':30}
+				{'label':'Last 30 days', 'value':30},
+				{'label':'Overall', 'value':0}
 			],
-			value=7,
-			labelStyle={'display':'inline-block'}
+			value=7
 		),
 
 		dcc.Graph(id='expense-days-figure',figure=graphs_obj.get_last_days_expenses(7)),
 
-		dcc.Graph(id='daily-expense-figure',figure=graphs_obj.get_daily_expenses_fig()),
 		dcc.Graph(id='monthly-expense-total',figure=graphs_obj.get_monthly_expenses_fig()),
 		dcc.Graph(id='daily-average-calculation',figure=graphs_obj.get_day_averages_fig()),
 		dcc.Graph(id='dynamic-moving-average',figure=graphs_obj.load_dynamic_average())
