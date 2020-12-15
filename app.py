@@ -12,14 +12,13 @@ def initialize_app():
 
 	return html.Div([
 
-		dcc.RadioItems(
+		dcc.Dropdown(
 			id='filter-days',
 			options=[
 				{'label':'Last 7 days', 'value':7},
 				{'label':'Last 30 days', 'value':30}
 			],
-			value=7,
-			labelStyle={'display':'inline-block'}
+			value=7
 		),
 
 		dcc.Graph(id='expense-days-figure',figure=graphs_obj.get_last_days_expenses(7)),
