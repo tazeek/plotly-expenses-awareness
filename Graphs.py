@@ -1,7 +1,5 @@
 from ExpenseHandler import ExpenseHandler
 
-from string import Template
-
 import plotly.graph_objects as go
 
 class Graphs:
@@ -63,8 +61,6 @@ class Graphs:
 
 		df = self._expense_obj.filter_expenses_dates(last_n_days)
 
-		template_str_obj = Template('Overview of expenses (Last $n days)')
-
 		fig = go.Figure([
 			go.Scatter(
 				x=df['date'],
@@ -74,11 +70,11 @@ class Graphs:
 		])
 
 		fig.update_layout(
-			title_text=template_str_obj.substitute(n=last_n_days),
+			title_text='Overview of expenses (Total per day)',
 			transition = 
 				{
 					'duration': 2000,
-					'easing': 'cubic-in-out'
+					'easing': 'linear'
 				}
 		)
 
