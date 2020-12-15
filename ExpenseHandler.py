@@ -160,6 +160,10 @@ class ExpenseHandler:
 	def filter_expenses_dates(self,num_days):
 
 		expense_df = self.get_total_costs('date')
+
+		if num_days == 0:
+			return expense_df
+
 		expense_df = expense_df.set_index('date')
 		expense_df= expense_df.sort_index()
 

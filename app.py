@@ -16,7 +16,8 @@ def initialize_app():
 			id='filter-days',
 			options=[
 				{'label':'Last 7 days', 'value':7},
-				{'label':'Last 30 days', 'value':30}
+				{'label':'Last 30 days', 'value':30},
+				{'label':'Overall', 'value':0}
 			],
 			value=7
 		),
