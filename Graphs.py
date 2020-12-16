@@ -56,13 +56,10 @@ class Graphs:
 			title_text='Overview of expenses (Total per day)',
 			transition = 
 				{
-					'duration': 2000,
+					'duration': 500,
 					'easing': 'linear'
 				}
 		)
-
-		if last_n_days == 0:
-			fig.update_xaxes(rangeslider_visible=True)
 
 		return fig
 
