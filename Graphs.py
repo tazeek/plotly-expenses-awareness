@@ -43,8 +43,10 @@ class Graphs:
 	def get_last_days_expenses(self, last_n_days):
 
 		df = self._expense_obj.filter_expenses_dates(last_n_days)
-		total = df['cost'].sum()
+		total, average = df['cost'].sum(), df['cost'].mean()
+
 		total_str = f'Total spent: {total:.2f}'
+		mean_str = f'Average per day: {average:.2f}'
 
 		fig = go.Figure([
 			go.Scatter(
@@ -63,7 +65,7 @@ class Graphs:
 				}
 		)
 
-		return fig,total_str
+		return fig,total_str,mean_str
 
 	def load_dynamic_average(self):
 

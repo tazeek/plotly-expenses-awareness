@@ -37,7 +37,8 @@ app.layout = initialize_app
 
 @app.callback(
 	[Output('expense-days-figure','figure'),
-	Output('total-expenses-amount','children')],
+	Output('total-expenses-amount','children'),
+	Output('average-expenses-amount','children')],
 	[Input('filter-days','value')]
 )
 def filter_expenses_days(day_count):
