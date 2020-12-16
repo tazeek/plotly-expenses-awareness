@@ -8,23 +8,6 @@ class Graphs:
 
 		self._expense_obj = ExpenseHandler()
 
-	def get_daily_expenses_fig(self):
-
-		daily_costs_df = self._expense_obj.get_total_costs('date')
-
-		fig = go.Figure([
-			go.Scatter(
-				x=daily_costs_df['date'],
-				y=daily_costs_df['cost'],
-				mode='lines+markers'
-			)
-		])
-
-		fig.update_layout(title_text='Overview of expenses (Daily)')
-		fig.update_xaxes(rangeslider_visible=True)
-
-		return fig
-
 	def get_monthly_expenses_fig(self):
 
 		monthly_costs_df = self._expense_obj.get_total_costs('month')
@@ -60,6 +43,10 @@ class Graphs:
 	def get_last_days_expenses(self, last_n_days):
 
 		df = self._expense_obj.filter_expenses_dates(last_n_days)
+		total, average = df['cost'].sum(), df['cost'].mean()
+
+		total_str = f'Total spent: {total:.2f}'
+		mean_str = f'Average per day: {average:.2f}'
 
 		fig = go.Figure([
 			go.Scatter(
@@ -73,12 +60,12 @@ class Graphs:
 			title_text='Overview of expenses (Total per day)',
 			transition = 
 				{
-					'duration': 2000,
+					'duration': 500,
 					'easing': 'linear'
 				}
 		)
 
-		return fig
+		return fig,total_str,mean_str
 
 	def load_dynamic_average(self):
 

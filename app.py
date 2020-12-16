@@ -22,7 +22,10 @@ def initialize_app():
 			value=7
 		),
 
-		dcc.Graph(id='expense-days-figure',figure=graphs_obj.get_last_days_expenses(7)),
+		html.H4(id='total-expenses-amount'),
+		html.H4(id='average-expenses-amount'),
+
+		dcc.Graph(id='expense-days-figure'),
 
 		dcc.Graph(id='monthly-expense-total',figure=graphs_obj.get_monthly_expenses_fig()),
 		dcc.Graph(id='daily-average-calculation',figure=graphs_obj.get_day_averages_fig()),
@@ -33,7 +36,9 @@ app = dash.Dash()
 app.layout = initialize_app
 
 @app.callback(
-	Output('expense-days-figure','figure'),
+	[Output('expense-days-figure','figure'),
+	Output('total-expenses-amount','children'),
+	Output('average-expenses-amount','children')],
 	[Input('filter-days','value')]
 )
 def filter_expenses_days(day_count):
