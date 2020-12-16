@@ -22,6 +22,9 @@ def initialize_app():
 			value=7
 		),
 
+		html.H4(id='total-expenses-amount'),
+		html.H4(id='average-expenses-amount'),
+
 		dcc.Graph(id='expense-days-figure',figure=graphs_obj.get_last_days_expenses(7)),
 
 		dcc.Graph(id='monthly-expense-total',figure=graphs_obj.get_monthly_expenses_fig()),
