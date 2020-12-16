@@ -44,7 +44,7 @@ class Graphs:
 
 		df = self._expense_obj.filter_expenses_dates(last_n_days)
 		total = df['cost'].sum()
-		total_str = f'Total spent: {total}'
+		total_str = f'Total spent: {total:.2f}'
 
 		fig = go.Figure([
 			go.Scatter(
