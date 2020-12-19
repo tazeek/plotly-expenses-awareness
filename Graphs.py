@@ -8,6 +8,12 @@ class Graphs:
 
 		self._expense_obj = ExpenseHandler()
 
+	def get_date_range(self):
+
+		expense_obj = self._expense_obj
+
+		return expense_obj.get_earliest_date(), expense_obj.get_latest_date()
+
 	def get_monthly_expenses_fig(self):
 
 		monthly_costs_df = self._expense_obj.get_total_costs('month')
