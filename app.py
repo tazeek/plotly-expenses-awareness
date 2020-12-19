@@ -32,8 +32,7 @@ def initialize_app():
 				min_date_allowed=earliest_date,
 				max_date_allowed=latest_date,
 				start_date=earliest_date,
-				end_date=latest_date,
-				updatemode='bothdates'
+				end_date=latest_date
 			)
 			],
 			style={'display':'none'}
@@ -77,18 +76,18 @@ def filter_expenses_days(day_count):
 		Output('expense-days-figure','figure'),
 		Output('total-expenses-amount', 'children'),
 		Output('average-expenses-amount','children')
-	]
+	],
 	[
 		Input('date-picker-range', 'start_date'),
-		Input('date-picker-range', 'end-date')
+		Input('date-picker-range', 'end_date')
 	]
 )
 def filter_between_dates(start_date, end_date):
 
-
 	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_between_dates(start_date, end_date)
+	print('COMPLETED!')
 
-	return None
+	return fig, total_str_display, avg_str_display
 
 dcb.register(app)
 

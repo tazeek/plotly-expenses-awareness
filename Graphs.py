@@ -75,7 +75,8 @@ class Graphs:
 
 	def get_expenses_between_dates(self, start_date, end_date):
 
-		df = self._expense_obj.filter_expenses_between_dates(last_n_days)
+		df = self._expense_obj.filter_expenses_between_dates(start_date, end_date)
+
 		total, average = df['cost'].sum(), df['cost'].mean()
 
 		total_str = f'Total spent: {total:.2f}'
@@ -98,7 +99,7 @@ class Graphs:
 				}
 		)
 
-		return fig
+		return fig, total_str, mean_str
 
 	def load_dynamic_average(self):
 
