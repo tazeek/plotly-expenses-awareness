@@ -69,7 +69,9 @@ def filter_expenses_days(day_count):
 	if day_count == 0:
 		date_picker_css['display'] = 'visible'
 
-	return graphs_obj.get_last_days_expenses(day_count)
+	fig, total_str_display, avg_str_display = graphs_obj.get_last_days_expenses(day_count)
+
+	return fig, total_str_display, avg_str_display
 
 if __name__ == '__main__':
 
