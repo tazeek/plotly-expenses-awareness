@@ -16,6 +16,12 @@ class ExpenseHandler:
 		self._fill_month_number()
 		self._fill_day_name()
 
+	def get_earliest_date(self):
+		return self._expenses_df['date'].min()
+
+	def get_latest_date(self):
+		return self._expenses_df['date'].max()
+
 	def get_expense_df(self):
 		""" Returns a copy of the expense dataframe attribute"""
 
