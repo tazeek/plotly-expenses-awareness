@@ -2,6 +2,7 @@ from Graphs import Graphs
 
 from dash.dependencies import Input, Output
 from dash_extensions.callback import DashCallbackBlueprint
+from dash.exceptions import PreventUpdate
 
 import dash
 import dash_core_components as dcc
@@ -53,6 +54,24 @@ app.layout = initialize_app
 
 @dcb.callback(
 	[
+		Output('expense-days-figure','figure'),
+		Output('total-expenses-amount', 'children'),
+		Output('average-expenses-amount','children')
+	],
+	[
+		Input('date-picker-range', 'start_date'),
+		Input('date-picker-range', 'end_date'),
+		Input('filter-days','value')
+	]
+)
+def filter_between_dates(start_date, end_date, value):
+
+	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_between_dates(start_date, end_date)
+
+	return fig, total_str_display, avg_str_display
+
+@dcb.callback(
+	[
 		Output('date-picker-div','style'),
 		Output('expense-days-figure','figure'),
 		Output('total-expenses-amount','children'),
@@ -70,24 +89,6 @@ def filter_expenses_days(day_count):
 	fig, total_str_display, avg_str_display = graphs_obj.get_last_days_expenses(day_count)
 
 	return date_picker_css, fig, total_str_display, avg_str_display
-
-@dcb.callback(
-	[
-		Output('expense-days-figure','figure'),
-		Output('total-expenses-amount', 'children'),
-		Output('average-expenses-amount','children')
-	],
-	[
-		Input('date-picker-range', 'start_date'),
-		Input('date-picker-range', 'end_date')
-	]
-)
-def filter_between_dates(start_date, end_date):
-
-	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_between_dates(start_date, end_date)
-	print('COMPLETED!')
-
-	return fig, total_str_display, avg_str_display
 
 dcb.register(app)
 
