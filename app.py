@@ -85,6 +85,9 @@ def filter_expenses_days(day_count):
 )
 def filter_between_dates(start_date, end_date):
 
+
+	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_between_dates(start_date, end_date)
+
 	return None
 
 dcb.register(app)

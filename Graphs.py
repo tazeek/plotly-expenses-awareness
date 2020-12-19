@@ -73,6 +73,10 @@ class Graphs:
 
 		return fig,total_str,mean_str
 
+	def get_expenses_between_dates(self, start_date, end_date):
+
+		return None
+
 	def load_dynamic_average(self):
 
 		df = self._expense_obj.calculate_moving_average()
