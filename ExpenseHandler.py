@@ -16,6 +16,12 @@ class ExpenseHandler:
 		self._fill_month_number()
 		self._fill_day_name()
 
+	def get_earliest_date(self):
+		return self._expenses_df['date'].min()
+
+	def get_latest_date(self):
+		return self._expenses_df['date'].max()
+
 	def get_expense_df(self):
 		""" Returns a copy of the expense dataframe attribute"""
 
@@ -169,6 +175,17 @@ class ExpenseHandler:
 
 		last_day = pd.to_datetime('today')
 		expense_df = expense_df.loc[last_day - pd.Timedelta(days=num_days):last_day].reset_index()
+
+		return expense_df
+
+	def filter_expenses_between_dates(self, start_date,end_date):
+
+		expense_df = self.get_total_costs('date')
+
+		expense_df = expense_df.set_index('date')
+		expense_df= expense_df.sort_index()
+		
+		expense_df = expense_df.loc[start_date : end_date].reset_index()
 
 		return expense_df
 
