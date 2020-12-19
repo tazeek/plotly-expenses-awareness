@@ -31,13 +31,15 @@ def initialize_app():
 			value=7
 		),
 
-		dcc.DatePickerRange(
+		html.Div([dcc.DatePickerRange(
 			id='date-picker-range',
 			min_date_allowed=date(1995,8,5),
 			max_date_allowed=date(2017,9,19),
 			initial_visible_month=date(2017,8,5),
 			start_date=date(2015,7,25),
-			end_date=date(2017,8,25)
+			end_date=date(2017,8,25))
+		],
+			style={'display':'none'}
 		),
 
 		html.H4(id='total-expenses-amount'),
@@ -54,12 +56,18 @@ app = dash.Dash()
 app.layout = initialize_app
 
 @app.callback(
-	[Output('expense-days-figure','figure'),
+	[#Output('date-picker-range','style'),
+	Output('expense-days-figure','figure'),
 	Output('total-expenses-amount','children'),
 	Output('average-expenses-amount','children')],
 	[Input('filter-days','value')]
 )
 def filter_expenses_days(day_count):
+
+	date_picker_css = {'display':'hidden'}
+
+	if day_count == 0:
+		date_picker_css['display'] = 'visible'
 
 	return graphs_obj.get_last_days_expenses(day_count)
 
