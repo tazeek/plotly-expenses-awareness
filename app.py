@@ -36,6 +36,7 @@ def initialize_app():
 			min_date_allowed=date(1995,8,5),
 			max_date_allowed=date(2017,9,19),
 			initial_visible_month=date(2017,8,5),
+			start_date=date(2015,7,25),
 			end_date=date(2017,8,25)
 		),
 
