@@ -178,3 +178,7 @@ class ExpenseHandler:
 
 		return expense_df
 
+	def filter_expenses_between_dates(start_date,end_date):
+
+		return expense_df
+

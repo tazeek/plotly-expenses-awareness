@@ -75,7 +75,30 @@ class Graphs:
 
 	def get_expenses_between_dates(self, start_date, end_date):
 
-		return None
+		df = self._expense_obj.filter_expenses_between_dates(last_n_days)
+		total, average = df['cost'].sum(), df['cost'].mean()
+
+		total_str = f'Total spent: {total:.2f}'
+		mean_str = f'Average per day: {average:.2f}'
+
+		fig = go.Figure([
+			go.Scatter(
+				x=df['date'],
+				y=df['cost'],
+				mode='lines+markers'
+			)
+		])
+
+		fig.update_layout(
+			title_text='Overview of expenses (Total per day)',
+			transition = 
+				{
+					'duration': 500,
+					'easing': 'linear'
+				}
+		)
+
+		return fig
 
 	def load_dynamic_average(self):
 
