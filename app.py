@@ -1,10 +1,19 @@
 from Graphs import Graphs
+from datetime import date
 
 from dash.dependencies import Input, Output
 
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+
+dcc.DatePickerRange(
+        id='my-date-picker-range',
+        min_date_allowed=date(1995, 8, 5),
+        max_date_allowed=date(2017, 9, 19),
+        initial_visible_month=date(2017, 8, 5),
+        end_date=date(2017, 8, 25)
+    ),
 
 graphs_obj = Graphs()
 
@@ -20,6 +29,14 @@ def initialize_app():
 				{'label':'Overall', 'value':0}
 			],
 			value=7
+		),
+
+		dcc.DatePickerRange(
+			id='date-picker-range',
+			min_date_allowed=date(1995,8,5),
+			max_date_allowed=date(2017,9,19),
+			initial_visible_month=date(2017,8,5),
+			end_date=date(2017,8,25)
 		),
 
 		html.H4(id='total-expenses-amount'),
