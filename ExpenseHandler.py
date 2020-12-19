@@ -180,5 +180,10 @@ class ExpenseHandler:
 
 	def filter_expenses_between_dates(start_date,end_date):
 
+		expense_df = self.get_total_costs('date')
+
+		expense_df = expense_df.set_index(['date'])
+		expense_df = expense_df.loc[start_date : end_date]
+
 		return expense_df
 
