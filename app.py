@@ -31,14 +31,15 @@ def initialize_app():
 			value=7
 		),
 
-		html.Div([dcc.DatePickerRange(
-			id='date-picker-range',
-			min_date_allowed=date(1995,8,5),
-			max_date_allowed=date(2017,9,19),
-			initial_visible_month=date(2017,8,5),
-			start_date=date(2015,7,25),
-			end_date=date(2017,8,25))
-		],
+		html.Div(id='date-picker-div', children=[
+			dcc.DatePickerRange(
+				id='date-picker-range',
+				min_date_allowed=date(1995,8,5),
+				max_date_allowed=date(2017,9,19),
+				initial_visible_month=date(2017,8,5),
+				start_date=date(2015,7,25),
+				end_date=date(2017,8,25))
+			],
 			style={'display':'none'}
 		),
 
@@ -56,22 +57,24 @@ app = dash.Dash()
 app.layout = initialize_app
 
 @app.callback(
-	[#Output('date-picker-range','style'),
-	Output('expense-days-figure','figure'),
-	Output('total-expenses-amount','children'),
-	Output('average-expenses-amount','children')],
+	[
+		Output('date-picker-div','style'),
+		Output('expense-days-figure','figure'),
+		Output('total-expenses-amount','children'),
+		Output('average-expenses-amount','children')
+	],
 	[Input('filter-days','value')]
 )
 def filter_expenses_days(day_count):
 
-	date_picker_css = {'display':'hidden'}
+	date_picker_css = {'display':'none'}
 
 	if day_count == 0:
-		date_picker_css['display'] = 'visible'
+		date_picker_css['display'] = 'block'
 
 	fig, total_str_display, avg_str_display = graphs_obj.get_last_days_expenses(day_count)
 
-	return fig, total_str_display, avg_str_display
+	return date_picker_css, fig, total_str_display, avg_str_display
 
 if __name__ == '__main__':
 
