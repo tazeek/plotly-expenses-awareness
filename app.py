@@ -15,6 +15,10 @@ def initialize_app():
 
 	earliest_date, latest_date = graphs_obj.get_date_range()
 
+	monthly_exp_fig = graphs_obj.get_monthly_expenses_fig()
+	daily_avg_fig = graphs_obj.get_day_averages_fig()
+	cumulative_avg_fig = graphs_obj.load_dynamic_average()
+
 	return html.Div([
 
 		dcc.Dropdown(
@@ -44,8 +48,8 @@ def initialize_app():
 
 		dcc.Graph(id='expense-days-figure'),
 
-		dcc.Graph(id='monthly-expense-total',figure=graphs_obj.get_monthly_expenses_fig()),
-		dcc.Graph(id='daily-average-calculation',figure=graphs_obj.get_day_averages_fig()),
+		dcc.Graph(id='monthly-expense-total',figure=monthly_exp_fig),
+		dcc.Graph(id='daily-average-calculation',figure=daily_avg_fig),
 		dcc.Graph(id='dynamic-moving-average',figure=graphs_obj.load_dynamic_average())
 	])
 
