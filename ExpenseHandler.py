@@ -16,6 +16,9 @@ class ExpenseHandler:
 		self._fill_month_number()
 		self._fill_day_name()
 
+		self._expenses_df_daily = self._get_total_costs_period('date')
+		self._expenses_df_monthly = self._get_total_costs_period('month')
+
 	def get_earliest_date(self):
 		return self._expenses_df['date'].min()
 
@@ -89,7 +92,7 @@ class ExpenseHandler:
 
 		self._expenses_df = expenses_df.assign(day = day_number_week)
 
-	def get_total_costs(self,period):
+	def _get_total_costs_period(self,period):
 		""" Return the total expenses amongst a period of time
 
 		Parameters
@@ -139,7 +142,7 @@ class ExpenseHandler:
 	def get_day_average(self):
 		"""Return the average expenses per day"""
 
-		expense_df = self.get_total_costs('date')
+		expense_df = self._expenses_df_daily
 
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
 
@@ -157,7 +160,7 @@ class ExpenseHandler:
 	def calculate_moving_average(self):
 		"""Find the dynamic average over time"""
 
-		expense_df = self.get_total_costs('date')
+		expense_df = self._expenses_df_daily
 
 		expense_df['moving_average'] = expense_df['cost'].expanding().mean()
 
@@ -165,7 +168,7 @@ class ExpenseHandler:
 
 	def filter_expenses_dates(self,num_days):
 
-		expense_df = self.get_total_costs('date')
+		expense_df = self._expenses_df_daily
 
 		if num_days == 0:
 			return expense_df
@@ -180,7 +183,7 @@ class ExpenseHandler:
 
 	def filter_expenses_between_dates(self, start_date,end_date):
 
-		expense_df = self.get_total_costs('date')
+		expense_df = self._expenses_df_daily
 
 		expense_df = expense_df.set_index('date')
 		expense_df= expense_df.sort_index()
