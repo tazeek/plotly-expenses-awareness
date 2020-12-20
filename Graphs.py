@@ -16,7 +16,7 @@ class Graphs:
 
 	def get_monthly_expenses_fig(self):
 
-		monthly_costs_df = self._expense_obj.get_total_costs('month')
+		monthly_costs_df = self._expense_obj.get_monthly_expense_df()
 
 		fig = go.Figure([
 			go.Scatter(

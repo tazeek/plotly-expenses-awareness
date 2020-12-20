@@ -30,6 +30,14 @@ class ExpenseHandler:
 
 		return self._expenses_df.copy()
 
+	def get_daily_expense_df(self):
+
+		return self._expenses_df_daily.copy()
+
+	def get_monthly_expense_df(self):
+
+		return self._expenses_df_monthly.copy()
+
 	def _get_zero_expense_dict(self,date):
 		"""Helper function for filling in zero expense dates
 		
