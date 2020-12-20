@@ -26,7 +26,7 @@ def initialize_app():
 			options=[
 				{'label':'Last 7 days', 'value':7},
 				{'label':'Last 30 days', 'value':30},
-				{'label':'Overall', 'value':None}
+				{'label':'Overall', 'value':0}
 			],
 			value=7
 		),
@@ -73,10 +73,10 @@ def filter_expenses_days(day_count, start_date, end_date):
 
 	date_picker_css = {'display':'none'}
 
-	if day_count is None:
+	if day_count == 0:
 		date_picker_css['display'] = 'block'
 
-	fig, total_str_display, avg_str_display = graphs_obj.get_last_days_expenses(day_count, start_date, end_date)
+	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_filter_days(day_count, start_date, end_date)
 
 	return date_picker_css, fig, total_str_display, avg_str_display
 
