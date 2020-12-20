@@ -25,11 +25,6 @@ class ExpenseHandler:
 	def get_latest_date(self):
 		return self._expenses_df['date'].max()
 
-	def get_expense_df(self):
-		""" Returns a copy of the expense dataframe attribute"""
-
-		return self._expenses_df.copy()
-
 	def get_daily_expense_df(self):
 
 		return self._expenses_df_daily.copy()
