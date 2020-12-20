@@ -26,7 +26,7 @@ def initialize_app():
 			options=[
 				{'label':'Last 7 days', 'value':7},
 				{'label':'Last 30 days', 'value':30},
-				{'label':'Overall', 'value':0}
+				{'label':'Overall', 'value':None}
 			],
 			value=7
 		),
@@ -58,39 +58,25 @@ app.layout = initialize_app
 
 @dcb.callback(
 	[
-		Output('expense-days-figure','figure'),
-		Output('total-expenses-amount', 'children'),
-		Output('average-expenses-amount','children')
-	],
-	[
-		Input('date-picker-range', 'start_date'),
-		Input('date-picker-range', 'end_date'),
-		Input('filter-days','value')
-	]
-)
-def filter_between_dates(start_date, end_date, value):
-
-	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_between_dates(start_date, end_date)
-
-	return fig, total_str_display, avg_str_display
-
-@dcb.callback(
-	[
 		Output('date-picker-div','style'),
 		Output('expense-days-figure','figure'),
 		Output('total-expenses-amount','children'),
 		Output('average-expenses-amount','children')
 	],
-	[Input('filter-days','value')]
+	[
+		Input('filter-days','value'),
+		Input('date-picker-range', 'start_date'),
+		Input('date-picker-range', 'end_date')
+	]
 )
-def filter_expenses_days(day_count):
+def filter_expenses_days(day_count, start_date, end_date):
 
 	date_picker_css = {'display':'none'}
 
-	if day_count == 0:
+	if day_count is None:
 		date_picker_css['display'] = 'block'
 
-	fig, total_str_display, avg_str_display = graphs_obj.get_last_days_expenses(day_count)
+	fig, total_str_display, avg_str_display = graphs_obj.get_last_days_expenses(day_count, start_date, end_date)
 
 	return date_picker_css, fig, total_str_display, avg_str_display
 
