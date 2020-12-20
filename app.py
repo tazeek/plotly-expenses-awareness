@@ -19,6 +19,9 @@ def initialize_app():
 	daily_avg_fig = graphs_obj.get_day_averages_fig()
 	cumulative_avg_fig = graphs_obj.load_dynamic_average()
 
+	# Load 7-day figure on default
+	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_filter_days(7, None, None)
+
 	return html.Div([
 
 		dcc.Dropdown(
@@ -43,10 +46,10 @@ def initialize_app():
 			style={'display':'none'}
 		),
 
-		html.H4(id='total-expenses-amount'),
-		html.H4(id='average-expenses-amount'),
+		html.H4(id='total-expenses-amount', children=total_str_display),
+		html.H4(id='average-expenses-amount', children=avg_str_display),
 
-		dcc.Graph(id='expense-days-figure'),
+		dcc.Graph(id='expense-days-figure', figure=fig),
 
 		dcc.Graph(id='monthly-expense-total',figure=monthly_exp_fig),
 		dcc.Graph(id='daily-average-calculation',figure=daily_avg_fig),
