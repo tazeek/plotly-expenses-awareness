@@ -169,9 +169,23 @@ class ExpenseHandler:
 
 		return expense_df
 
+	def filter_expenses_dates(self, num_days, start_date, end_date):
+
+		expense_df = self._expenses_df_daily
+		expense_df = expense_df.set_index('date')
+
+		if num_days is None:
+			expense_df = expense_df.loc[start_date : end_date].reset_index()
+		else:
+			last_day = pd.to_datetime('today')
+			expense_df = expense_df.loc[last_day - pd.Timedelta(days=num_days):last_day].reset_index()
+
+		return expense_df
+
 	def filter_expenses_dates(self,num_days):
 
 		expense_df = self._expenses_df_daily
+
 
 		if num_days == 0:
 			return expense_df
