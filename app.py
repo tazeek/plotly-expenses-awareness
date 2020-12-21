@@ -15,6 +15,13 @@ def initialize_app():
 
 	earliest_date, latest_date = graphs_obj.get_date_range()
 
+	monthly_exp_fig = graphs_obj.get_monthly_expenses_fig()
+	daily_avg_fig = graphs_obj.get_day_averages_fig()
+	cumulative_avg_fig = graphs_obj.load_dynamic_average()
+
+	# Load 7-day figure on default
+	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_filter_days(7, None, None)
+
 	return html.Div([
 
 		dcc.Dropdown(
@@ -39,13 +46,13 @@ def initialize_app():
 			style={'display':'none'}
 		),
 
-		html.H4(id='total-expenses-amount'),
-		html.H4(id='average-expenses-amount'),
+		html.H4(id='total-expenses-amount', children=total_str_display),
+		html.H4(id='average-expenses-amount', children=avg_str_display),
 
-		dcc.Graph(id='expense-days-figure'),
+		dcc.Graph(id='expense-days-figure', figure=fig),
 
-		dcc.Graph(id='monthly-expense-total',figure=graphs_obj.get_monthly_expenses_fig()),
-		dcc.Graph(id='daily-average-calculation',figure=graphs_obj.get_day_averages_fig()),
+		dcc.Graph(id='monthly-expense-total',figure=monthly_exp_fig),
+		dcc.Graph(id='daily-average-calculation',figure=daily_avg_fig),
 		dcc.Graph(id='dynamic-moving-average',figure=graphs_obj.load_dynamic_average())
 	])
 
@@ -54,39 +61,25 @@ app.layout = initialize_app
 
 @dcb.callback(
 	[
-		Output('expense-days-figure','figure'),
-		Output('total-expenses-amount', 'children'),
-		Output('average-expenses-amount','children')
-	],
-	[
-		Input('date-picker-range', 'start_date'),
-		Input('date-picker-range', 'end_date'),
-		Input('filter-days','value')
-	]
-)
-def filter_between_dates(start_date, end_date, value):
-
-	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_between_dates(start_date, end_date)
-
-	return fig, total_str_display, avg_str_display
-
-@dcb.callback(
-	[
 		Output('date-picker-div','style'),
 		Output('expense-days-figure','figure'),
 		Output('total-expenses-amount','children'),
 		Output('average-expenses-amount','children')
 	],
-	[Input('filter-days','value')]
+	[
+		Input('filter-days','value'),
+		Input('date-picker-range', 'start_date'),
+		Input('date-picker-range', 'end_date')
+	]
 )
-def filter_expenses_days(day_count):
+def filter_expenses_days(day_count, start_date, end_date):
 
 	date_picker_css = {'display':'none'}
 
 	if day_count == 0:
 		date_picker_css['display'] = 'block'
 
-	fig, total_str_display, avg_str_display = graphs_obj.get_last_days_expenses(day_count)
+	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_filter_days(day_count, start_date, end_date)
 
 	return date_picker_css, fig, total_str_display, avg_str_display
 
