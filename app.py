@@ -5,11 +5,14 @@ from dash_extensions.callback import DashCallbackBlueprint
 from dash.exceptions import PreventUpdate
 
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+
+from layout import generate_layout
 
 graphs_obj = Graphs()
-dcb = DashCallbackBlueprint() 
+dcb = DashCallbackBlueprint()
+
+app = dash.Dash()
+app.layout = generate_layout(graphs_obj) 
 
 def initialize_app():
 
@@ -55,9 +58,6 @@ def initialize_app():
 		dcc.Graph(id='daily-average-calculation',figure=daily_avg_fig),
 		dcc.Graph(id='dynamic-moving-average',figure=graphs_obj.load_dynamic_average())
 	])
-
-app = dash.Dash()
-app.layout = initialize_app
 
 @dcb.callback(
 	[
