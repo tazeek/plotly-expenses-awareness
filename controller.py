@@ -4,6 +4,8 @@ from dash_extensions.callback import DashCallbackBlueprint
 
 def register_callbacks(app, graphs_obj):
 
+	dcb = DashCallbackBlueprint()
+
 	@dcb.callback(
 		[
 			Output('date-picker-div','style'),
