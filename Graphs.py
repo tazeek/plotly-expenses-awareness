@@ -88,3 +88,18 @@ class Graphs:
 		fig.update_layout(title_text='Cumulative Average (By Day)')
 
 		return fig
+
+	def load_pie_chart_expenses(self):
+
+		df = self._expense_obj.count_all_category_expenses()
+
+		fig = go.Figure(
+			data=[
+				go.Pie(
+					labels=total_expense_df['category'], 
+					values=total_expense_df['cost']
+				)
+			]
+		)
+
+		return fig
