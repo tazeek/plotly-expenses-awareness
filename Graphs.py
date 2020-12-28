@@ -96,8 +96,8 @@ class Graphs:
 		fig = go.Figure(
 			data=[
 				go.Pie(
-					labels=total_expense_df['category'], 
-					values=total_expense_df['cost']
+					labels=df['category'], 
+					values=df['cost']
 				)
 			]
 		)

@@ -8,6 +8,7 @@ def generate_layout(graphs_obj):
 	monthly_exp_fig = graphs_obj.get_monthly_expenses_fig()
 	daily_avg_fig = graphs_obj.get_day_averages_fig()
 	cumulative_avg_fig = graphs_obj.load_dynamic_average()
+	comparison_pie_fig = graphs_obj.load_pie_chart_expenses()
 
 	# Load 7-day figure on default
 	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_filter_days(7, None, None)
@@ -43,5 +44,6 @@ def generate_layout(graphs_obj):
 
 		dcc.Graph(id='monthly-expense-total',figure=monthly_exp_fig),
 		dcc.Graph(id='daily-average-calculation',figure=daily_avg_fig),
-		dcc.Graph(id='dynamic-moving-average',figure=graphs_obj.load_dynamic_average())
+		dcc.Graph(id='dynamic-moving-average',figure=cumulative_avg_fig),
+		dcc.Graph(id='comparison-pie-fig', figure=comparison_pie_fig)
 	])
