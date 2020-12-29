@@ -3,16 +3,14 @@ import dash_html_components as html
 
 def generate_layout(graphs_obj):
 
+	dynamic_date_dict = graphs_obj.get_figures_expense_filters(7, None, None)
+
 	earliest_date, latest_date = graphs_obj.get_date_range()
 
 	monthly_exp_fig = graphs_obj.get_monthly_expenses_fig()
 	cumulative_avg_fig = graphs_obj.load_dynamic_average()
 
-	dynamic_date_dict = graphs_obj.get_figures_expense_filters(7, None, None)
 	overview_dict = dynamic_date_dict['overview_fig']
-
-	# Load 7-day figure on default
-	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_filter_days(7, None, None)
 
 	return html.Div([
 

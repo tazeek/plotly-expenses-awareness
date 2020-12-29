@@ -15,8 +15,8 @@ class ExpenseHandler:
 		self._fill_month_number()
 		self._fill_day_name()
 
-		self._expenses_df_daily = self._get_total_costs_period('date')
-		self._expenses_df_monthly = self._get_total_costs_period('month')
+		self._expenses_df_daily = self._get_total_costs_period('date', None)
+		self._expenses_df_monthly = self._get_total_costs_period('month', None)
 
 	def get_earliest_date(self):
 		return self._expenses_df['date'].min()
@@ -98,7 +98,7 @@ class ExpenseHandler:
 
 		self._expenses_df = expenses_df.assign(day = day_number_week)
 
-	def _get_total_costs_period(self,period):
+	def _get_total_costs_period(self,period, dataframe):
 		""" Return the total expenses amongst a period of time
 
 		Parameters
@@ -113,7 +113,10 @@ class ExpenseHandler:
 
 		"""
 
-		annual_costs_df = self._expenses_df[[period,'day','cost']].copy()
+		if dataframe is None:
+			dataframe = self.get_full_df()
+
+		annual_costs_df = dataframe[[period,'day','cost']].copy()
 
 		if period == 'month':
 
@@ -147,8 +150,6 @@ class ExpenseHandler:
 
 	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""
-		expense_df = self.get_daily_expense_df()
-
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
 
 		return expense_df.sort_values('cost',ascending=False)
@@ -187,7 +188,7 @@ class ExpenseHandler:
 	def get_filtered_dataframes(self, num_days, start_date, end_date):
 
 		expense_df = self.get_full_df()
-		print(expense_df.head(6))
+
 		expense_df = expense_df.set_index('date')
 
 		if num_days == 0:
@@ -197,9 +198,10 @@ class ExpenseHandler:
 			expense_df = expense_df.loc[last_day - pd.Timedelta(days=num_days):last_day]
 
 		expense_df.reset_index(inplace=True)
+		print(expense_df)
 
 		return {
-			'full_overview': expense_df,
+			'full_overview': self._get_total_costs_period('date',expense_df),
 			'daily_avg': self.get_day_average(expense_df),
 			'total_category_amount': self.count_all_category_expenses(expense_df)
 		}
