@@ -8,33 +8,20 @@ class Graphs:
 
 		self._expense_obj = ExpenseHandler()
 
-	def get_date_range(self):
+	def _load_pie_chart_expenses(self, df):
 
-		expense_obj = self._expense_obj
+		return go.Figure(
+			data=[
+				go.Pie(
+					labels=df['category'], 
+					values=df['cost']
+				)
+			]
+		)
 
-		return expense_obj.get_earliest_date(), expense_obj.get_latest_date()
+	def _load_average_bar_chart_expenses(self, df):
 
-	def get_monthly_expenses_fig(self):
-
-		monthly_costs_df = self._expense_obj.get_monthly_expense_df()
-
-		fig = go.Figure([
-			go.Scatter(
-				x=monthly_costs_df['month'],
-				y=monthly_costs_df['cost'],
-				mode='lines+markers'
-			)
-		])
-
-		fig.update_layout(title_text='Overview of expenses (Monthly)')
-
-		return fig
-
-	def get_day_averages_fig(self):
-
-		days_avg_df = self._expense_obj.get_day_average()
-
-		fig = go.Figure([go.Bar(x=days_avg_df['day'], y=days_avg_df['cost'])])
+		fig = go.Figure([go.Bar(x=df['day'], y=df['cost'])])
 
 		fig.update_layout(
 			title='Average expenses (Day-to-day)',
@@ -46,9 +33,8 @@ class Graphs:
 
 		return fig
 
-	def get_expenses_filter_days(self, last_n_days, start_date, end_date):
+	def _load_overview_trend(self, df):
 
-		df = self._expense_obj.filter_expenses_dates(last_n_days, start_date, end_date)
 		total, average = df['cost'].sum(), df['cost'].mean()
 
 		total_str = f'Total spent: {total:.2f}'
@@ -71,7 +57,33 @@ class Graphs:
 				}
 		)
 
-		return fig,total_str,mean_str
+		return {
+			'fig' : fig,
+			'total': total_str,
+			'average': mean_str
+		}
+
+	def get_date_range(self):
+
+		expense_obj = self._expense_obj
+
+		return expense_obj.get_earliest_date(), expense_obj.get_latest_date()
+
+	def get_monthly_expenses_fig(self):
+
+		monthly_costs_df = self._expense_obj.get_monthly_expense_df()
+
+		fig = go.Figure([
+			go.Scatter(
+				x=monthly_costs_df['month'],
+				y=monthly_costs_df['cost'],
+				mode='lines+markers'
+			)
+		])
+
+		fig.update_layout(title_text='Overview of expenses (Monthly)')
+
+		return fig
 
 	def load_dynamic_average(self):
 
@@ -89,17 +101,13 @@ class Graphs:
 
 		return fig
 
-	def load_pie_chart_expenses(self):
+	def get_figures_expense_filters(self, last_n_days, start_date, end_date):
 
-		df = self._expense_obj.count_all_category_expenses()
+		dataframe_dicts = self._expense_obj.get_filtered_dataframes(last_n_days, start_date, end_date)
+		
+		return {
+			'overview_fig': self._load_overview_trend(dataframe_dicts['full_overview']),
+			'average_fig': self._load_average_bar_chart_expenses(dataframe_dicts['daily_avg']),
+			'pie_chart_figure': self._load_pie_chart_expenses(dataframe_dicts['total_category_amount'])
+		}
 
-		fig = go.Figure(
-			data=[
-				go.Pie(
-					labels=df['category'], 
-					values=df['cost']
-				)
-			]
-		)
-
-		return fig

@@ -7,7 +7,6 @@ class ExpenseHandler:
 
 	def __init__(self):
 
-		file = 'folder/expenses.csv'
 		expenses_df = pd.read_csv('folder/expenses.csv')
 		expenses_df['date'] = pd.to_datetime(expenses_df['date'])
 
@@ -16,14 +15,18 @@ class ExpenseHandler:
 		self._fill_month_number()
 		self._fill_day_name()
 
-		self._expenses_df_daily = self._get_total_costs_period('date')
-		self._expenses_df_monthly = self._get_total_costs_period('month')
+		self._expenses_df_daily = self._get_total_costs_period('date', None)
+		self._expenses_df_monthly = self._get_total_costs_period('month', None)
 
 	def get_earliest_date(self):
 		return self._expenses_df['date'].min()
 
 	def get_latest_date(self):
 		return self._expenses_df['date'].max()
+
+	def get_full_df(self):
+
+		return self._expenses_df.copy()
 
 	def get_daily_expense_df(self):
 
@@ -95,7 +98,7 @@ class ExpenseHandler:
 
 		self._expenses_df = expenses_df.assign(day = day_number_week)
 
-	def _get_total_costs_period(self,period):
+	def _get_total_costs_period(self,period, dataframe):
 		""" Return the total expenses amongst a period of time
 
 		Parameters
@@ -110,7 +113,10 @@ class ExpenseHandler:
 
 		"""
 
-		annual_costs_df = self._expenses_df[[period,'day','cost']].copy()
+		if dataframe is None:
+			dataframe = self.get_full_df()
+
+		annual_costs_df = dataframe[[period,'day','cost']].copy()
 
 		if period == 'month':
 
@@ -126,7 +132,7 @@ class ExpenseHandler:
 	def get_category_counts(self):
 		"""Return the total counts of category of expenses"""
 
-		expenses_df = self._expenses_df
+		expenses_df = self.get_daily_expense_df()
 
 		category_counts_ser = expenses_df['category'].value_counts()
 
@@ -135,35 +141,33 @@ class ExpenseHandler:
 	def count_expense_and_non_expense(self):
 		"""Return a count of total number of expense and non-expense occurrences"""
 
-		expenses_df = self._expenses_df
+		expenses_df = self.get_daily_expense_df()
 
 		non_expenses_count = len(expenses_df.query('category != "zero expenses"'))
 		expenses_count = len(expenses_df) - non_expenses_count
 
 		return non_expenses_count, expenses_count
 
-	def get_day_average(self):
+	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""
-
-		expense_df = self._expenses_df_daily
 
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
 
 		return expense_df.sort_values('cost',ascending=False)
 
-	def count_all_category_expenses(self):
+	def count_all_category_expenses(self, expense_df):
 		"""Return the total amount of expenses per category"""
 
-		expenses_df = self._expenses_df[['category','cost']]
+		expense_df = expense_df[['category','cost']]
 
-		expenses_df = expenses_df.groupby(['category']).sum().reset_index()
+		expense_df = expense_df.groupby(['category']).sum().reset_index()
 
-		return expenses_df
+		return expense_df
 
 	def calculate_moving_average(self):
 		"""Find the dynamic average over time"""
 
-		expense_df = self._expenses_df_daily
+		expense_df = self.get_daily_expense_df()
 
 		expense_df['moving_average'] = expense_df['cost'].expanding().mean()
 
@@ -171,7 +175,7 @@ class ExpenseHandler:
 
 	def filter_expenses_dates(self, num_days, start_date, end_date):
 
-		expense_df = self._expenses_df_daily
+		expense_df = self.get_daily_expense_df()
 		expense_df = expense_df.set_index('date')
 
 		if num_days == 0:
@@ -181,4 +185,26 @@ class ExpenseHandler:
 			expense_df = expense_df.loc[last_day - pd.Timedelta(days=num_days):last_day]
 
 		return expense_df.reset_index()
+
+	def get_filtered_dataframes(self, num_days, start_date, end_date):
+
+		expense_df = self.get_full_df()
+
+		expense_df = expense_df.set_index('date')
+
+		if num_days == 0:
+			expense_df = expense_df.loc[start_date : end_date]
+		else:
+			last_day = pd.to_datetime('today')
+			expense_df = expense_df.loc[last_day - pd.Timedelta(days=num_days):last_day]
+
+		expense_df.reset_index(inplace=True)
+
+		avg_df = self._get_total_costs_period('date',expense_df)
+
+		return {
+			'full_overview': avg_df,
+			'daily_avg': self.get_day_average(avg_df),
+			'total_category_amount': self.count_all_category_expenses(expense_df)
+		}
 

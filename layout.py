@@ -3,15 +3,14 @@ import dash_html_components as html
 
 def generate_layout(graphs_obj):
 
+	dynamic_date_dict = graphs_obj.get_figures_expense_filters(7, None, None)
+
 	earliest_date, latest_date = graphs_obj.get_date_range()
 
 	monthly_exp_fig = graphs_obj.get_monthly_expenses_fig()
-	daily_avg_fig = graphs_obj.get_day_averages_fig()
 	cumulative_avg_fig = graphs_obj.load_dynamic_average()
-	comparison_pie_fig = graphs_obj.load_pie_chart_expenses()
 
-	# Load 7-day figure on default
-	fig, total_str_display, avg_str_display = graphs_obj.get_expenses_filter_days(7, None, None)
+	overview_dict = dynamic_date_dict['overview_fig']
 
 	return html.Div([
 
@@ -37,13 +36,13 @@ def generate_layout(graphs_obj):
 			style={'display':'none'}
 		),
 
-		html.H4(id='total-expenses-amount', children=total_str_display),
-		html.H4(id='average-expenses-amount', children=avg_str_display),
+		html.H4(id='total-expenses-amount', children=overview_dict['total']),
+		html.H4(id='average-expenses-amount', children=overview_dict['average']),
 
-		dcc.Graph(id='expense-days-figure', figure=fig),
+		dcc.Graph(id='expense-days-figure', figure=overview_dict['fig']),
 
 		dcc.Graph(id='monthly-expense-total',figure=monthly_exp_fig),
-		dcc.Graph(id='daily-average-calculation',figure=daily_avg_fig),
+		dcc.Graph(id='daily-average-calculation',figure=dynamic_date_dict['average_fig']),
 		dcc.Graph(id='dynamic-moving-average',figure=cumulative_avg_fig),
-		dcc.Graph(id='comparison-pie-fig', figure=comparison_pie_fig)
+		dcc.Graph(id='comparison-pie-fig', figure=dynamic_date_dict['pie_chart_figure'])
 	])
