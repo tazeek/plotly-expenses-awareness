@@ -142,21 +142,19 @@ class ExpenseHandler:
 
 		return non_expenses_count, expenses_count
 
-	def get_day_average(self):
+	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""
-
-		expense_df = self._expenses_df_daily
 
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
 
 		return expense_df.sort_values('cost',ascending=False)
 
-	def count_all_category_expenses(self):
+	def count_all_category_expenses(self, expense_df):
 		"""Return the total amount of expenses per category"""
 
-		expenses_df = self._expenses_df[['category','cost']]
+		expense_df = expense_df[['category','cost']]
 
-		expenses_df = expenses_df.groupby(['category']).sum().reset_index()
+		expense_df = expense_df.groupby(['category']).sum().reset_index()
 
 		return expenses_df
 
@@ -192,6 +190,8 @@ class ExpenseHandler:
 		else:
 			last_day = pd.to_datetime('today')
 			expense_df = expense_df.loc[last_day - pd.Timedelta(days=num_days):last_day]
+
+		expense_df.reset_index(inplace=True)
 
 		return {
 			'daily_avg_fig': self.get_day_average(expense_df),
