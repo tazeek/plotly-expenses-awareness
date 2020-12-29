@@ -194,7 +194,8 @@ class ExpenseHandler:
 		expense_df.reset_index(inplace=True)
 
 		return {
-			'daily_avg_fig': self.get_day_average(expense_df),
-			'pie_chart_fig': self.count_all_category_expenses(expense_df)
+			'full_overview': expense_df,
+			'daily_avg': self.get_day_average(expense_df),
+			'total_category_amount': self.count_all_category_expenses(expense_df)
 		}
 
