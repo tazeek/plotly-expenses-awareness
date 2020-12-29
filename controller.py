@@ -10,6 +10,8 @@ def register_callbacks(app, graphs_obj):
 		[
 			Output('date-picker-div','style'),
 			Output('expense-days-figure','figure'),
+			Output('daily-average-calculation','figure'),
+			Output('comparison-pie-fig','figure'),
 			Output('total-expenses-amount','children'),
 			Output('average-expenses-amount','children')
 		],
@@ -29,10 +31,14 @@ def register_callbacks(app, graphs_obj):
 		dynamic_date_dict = graphs_obj.get_figures_expense_filters(day_count, start_date, end_date)
 		overview_trend_dict = dynamic_date_dict['overview_fig']
 
-		return_list = [date_picker_css, overview_trend_dict['fig'], overview_trend_dict['total'], overview_trend_dict['average']]
-
-		#return date_picker_css, overview_trend_dict['fig'], overview_trend_dict['total'], overview_trend_dict['average']
-		return return_list
+		return [
+			date_picker_css, 
+			overview_trend_dict['fig'], 
+			dynamic_date_dict['average_fig'],
+			dynamic_date_dict['pie_chart_figure'],
+			overview_trend_dict['total'], 
+			overview_trend_dict['average']
+		]
 
 	dcb.register(app)
 
