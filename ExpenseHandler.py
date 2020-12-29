@@ -7,7 +7,6 @@ class ExpenseHandler:
 
 	def __init__(self):
 
-		file = 'folder/expenses.csv'
 		expenses_df = pd.read_csv('folder/expenses.csv')
 		expenses_df['date'] = pd.to_datetime(expenses_df['date'])
 
@@ -24,6 +23,10 @@ class ExpenseHandler:
 
 	def get_latest_date(self):
 		return self._expenses_df['date'].max()
+
+	def get_full_df(self):
+
+		return self._expenses_df.copy()
 
 	def get_daily_expense_df(self):
 
@@ -126,7 +129,7 @@ class ExpenseHandler:
 	def get_category_counts(self):
 		"""Return the total counts of category of expenses"""
 
-		expenses_df = self._expenses_df
+		expenses_df = self.get_daily_expense_df()
 
 		category_counts_ser = expenses_df['category'].value_counts()
 
@@ -135,7 +138,7 @@ class ExpenseHandler:
 	def count_expense_and_non_expense(self):
 		"""Return a count of total number of expense and non-expense occurrences"""
 
-		expenses_df = self._expenses_df
+		expenses_df = self.get_daily_expense_df()
 
 		non_expenses_count = len(expenses_df.query('category != "zero expenses"'))
 		expenses_count = len(expenses_df) - non_expenses_count
@@ -144,6 +147,7 @@ class ExpenseHandler:
 
 	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""
+		expense_df = self.get_daily_expense_df()
 
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
 
@@ -156,12 +160,12 @@ class ExpenseHandler:
 
 		expense_df = expense_df.groupby(['category']).sum().reset_index()
 
-		return expenses_df
+		return expense_df
 
 	def calculate_moving_average(self):
 		"""Find the dynamic average over time"""
 
-		expense_df = self._expenses_df_daily
+		expense_df = self.get_daily_expense_df()
 
 		expense_df['moving_average'] = expense_df['cost'].expanding().mean()
 
@@ -169,7 +173,7 @@ class ExpenseHandler:
 
 	def filter_expenses_dates(self, num_days, start_date, end_date):
 
-		expense_df = self._expenses_df_daily
+		expense_df = self.get_daily_expense_df()
 		expense_df = expense_df.set_index('date')
 
 		if num_days == 0:
@@ -182,7 +186,8 @@ class ExpenseHandler:
 
 	def get_filtered_dataframes(self, num_days, start_date, end_date):
 
-		expense_df = self._expenses_df_daily
+		expense_df = self.get_full_df()
+		print(expense_df.head(6))
 		expense_df = expense_df.set_index('date')
 
 		if num_days == 0:
