@@ -103,10 +103,10 @@ class Graphs:
 
 	def get_figures_expense_filters(self, last_n_days, start_date, end_date):
 
-		dataframe_dicts = self._expense_obj.filter_expenses_dates(last_n_days, start_date, end_date)
+		dataframe_dicts = self._expense_obj.get_filtered_dataframes(last_n_days, start_date, end_date)
 		
 		return {
-			'overview_fig': self._load_overview_trend(dataframe_dicts['full_overview'])
+			'overview_fig': self._load_overview_trend(dataframe_dicts['full_overview']),
 			'average_fig': self._load_average_bar_chart_expenses(dataframe_dicts['daily_avg']),
 			'pie_chart_figure': self._load_pie_chart_expenses(dataframe_dicts['total_category_amount'])
 		}
