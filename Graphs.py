@@ -33,28 +33,6 @@ class Graphs:
 
 		return fig
 
-	def get_date_range(self):
-
-		expense_obj = self._expense_obj
-
-		return expense_obj.get_earliest_date(), expense_obj.get_latest_date()
-
-	def get_monthly_expenses_fig(self):
-
-		monthly_costs_df = self._expense_obj.get_monthly_expense_df()
-
-		fig = go.Figure([
-			go.Scatter(
-				x=monthly_costs_df['month'],
-				y=monthly_costs_df['cost'],
-				mode='lines+markers'
-			)
-		])
-
-		fig.update_layout(title_text='Overview of expenses (Monthly)')
-
-		return fig
-
 	def _load_overview_trend(self, df):
 
 		total, average = df['cost'].sum(), df['cost'].mean()
@@ -84,6 +62,28 @@ class Graphs:
 			'total': total_str,
 			'average': mean_str
 		}
+
+	def get_date_range(self):
+
+		expense_obj = self._expense_obj
+
+		return expense_obj.get_earliest_date(), expense_obj.get_latest_date()
+
+	def get_monthly_expenses_fig(self):
+
+		monthly_costs_df = self._expense_obj.get_monthly_expense_df()
+
+		fig = go.Figure([
+			go.Scatter(
+				x=monthly_costs_df['month'],
+				y=monthly_costs_df['cost'],
+				mode='lines+markers'
+			)
+		])
+
+		fig.update_layout(title_text='Overview of expenses (Monthly)')
+
+		return fig
 
 	def load_dynamic_average(self):
 
