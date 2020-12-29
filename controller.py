@@ -26,9 +26,10 @@ def register_callbacks(app, graphs_obj):
 		if day_count == 0:
 			date_picker_css['display'] = 'block'
 
-		fig, total_str_display, avg_str_display = graphs_obj.get_expenses_filter_days(day_count, start_date, end_date)
+		dynamic_date_dict = graphs_obj.get_figures_expense_filters(day_count, start_date, end_date)
+		overview_trend_dict = dynamic_date_dict['overview_fig']
 
-		return date_picker_css, fig, total_str_display, avg_str_display
+		return date_picker_css, overview_trend_dict['fig'], overview_trend_dict['total'], overview_trend_dict['average']
 
 	dcb.register(app)
 
