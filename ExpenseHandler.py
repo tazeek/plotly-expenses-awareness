@@ -193,5 +193,8 @@ class ExpenseHandler:
 			last_day = pd.to_datetime('today')
 			expense_df = expense_df.loc[last_day - pd.Timedelta(days=num_days):last_day]
 
-		return expense_df.reset_index()
+		return {
+			'daily_avg_fig': self.get_day_average(expense_df),
+			'pie_chart_fig': self.count_all_category_expenses(expense_df)
+		}
 
