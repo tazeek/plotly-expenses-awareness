@@ -29,7 +29,10 @@ def register_callbacks(app, graphs_obj):
 		dynamic_date_dict = graphs_obj.get_figures_expense_filters(day_count, start_date, end_date)
 		overview_trend_dict = dynamic_date_dict['overview_fig']
 
-		return date_picker_css, overview_trend_dict['fig'], overview_trend_dict['total'], overview_trend_dict['average']
+		return_list = [date_picker_css, overview_trend_dict['fig'], overview_trend_dict['total'], overview_trend_dict['average']]
+
+		#return date_picker_css, overview_trend_dict['fig'], overview_trend_dict['total'], overview_trend_dict['average']
+		return return_list
 
 	dcb.register(app)
 
