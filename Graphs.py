@@ -111,3 +111,19 @@ class Graphs:
 			'pie_chart_figure': self._load_pie_chart_expenses(dataframe_dicts['total_category_amount'])
 		}
 
+	def get_zero_expense_trend(self):
+
+		zero_expense_count_monthly = self._expense_obj.count_expenses_per_month()
+
+		fig = go.Figure([
+			go.Scatter(
+				x=zero_expense_count_monthly['month_year'],
+				y=zero_expense_count_monthly['count'],
+				mode='lines+markers'
+			)
+		])
+
+		fig.update_layout(title_text='Count of zero expense days (Monthly)')
+
+		return fig
+

@@ -138,15 +138,29 @@ class ExpenseHandler:
 
 		return category_counts_ser.keys(), category_counts_ser.values
 
-	def count_expense_and_non_expense(self):
-		"""Return a count of total number of expense and non-expense occurrences"""
+	def count_expenses_per_month(self):
+		"""Return a count of total number non-expense counts per month"""
 
 		expenses_df = self.get_daily_expense_df()
 
-		non_expenses_count = len(expenses_df.query('category != "zero expenses"'))
-		expenses_count = len(expenses_df) - non_expenses_count
+		earliest_date = self.get_earliest_date().strftime('%Y-%m')
+		latest_date = self.get_latest_date().strftime('%Y-%m')
+		all_month_range = pd.period_range(earliest_date,latest_date,freq='M')
 
-		return non_expenses_count, expenses_count
+		all_month_range = [date.strftime('%b %Y') for date in all_month_range]
+
+		zero_expense_df = expenses_df.query('cost == 0')
+		zero_expense_df.set_index('date', inplace=True)
+
+		zero_expense_group_month = zero_expense_df.groupby(pd.Grouper(freq="M")).count()
+		zero_expense_group_month.index = zero_expense_group_month.index.strftime('%b %Y')
+		zero_expense_group_month = zero_expense_group_month.reindex(all_month_range, fill_value=0)
+
+		zero_expense_group_month.reset_index(inplace=True)
+		zero_expense_group_month.drop(['day'],1,inplace=True)
+		zero_expense_group_month.rename(columns={'cost':'count','date':'month_year'}, inplace=True)
+
+		return zero_expense_group_month
 
 	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""
