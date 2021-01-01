@@ -143,15 +143,22 @@ class ExpenseHandler:
 
 		expenses_df = self.get_daily_expense_df()
 
+		earliest_date = self.get_earliest_date().strftime('%Y-%m')
+		latest_date = self.get_latest_date().strftime('%Y-%m')
+		all_month_range = pd.period_range(earliest_date,latest_date,freq='M')
+
+		all_month_range = [date.strftime('%b %Y') for date in all_month_range]
+
 		zero_expense_df = expenses_df.query('cost == 0')
 		zero_expense_df.set_index('date', inplace=True)
 
 		zero_expense_group_month = zero_expense_df.groupby(pd.Grouper(freq="M")).count()
-		zero_expense_group_month.reset_index(inplace=True)
+		zero_expense_group_month.index = zero_expense_group_month.index.strftime('%b %Y')
+		zero_expense_group_month = zero_expense_group_month.reindex(all_month_range, fill_value=0)
 
-		zero_expense_group_month['month_year'] = zero_expense_group_month['date'].dt.strftime('%b %Y')
-		zero_expense_group_month.drop(['day','date'],1,inplace=True)
-		zero_expense_group_month.rename(columns={'cost':'count'}, inplace=True)
+		zero_expense_group_month.reset_index(inplace=True)
+		zero_expense_group_month.drop(['day'],1,inplace=True)
+		zero_expense_group_month.rename(columns={'cost':'count','date':'month_year'}, inplace=True)
 
 		return zero_expense_group_month
 
