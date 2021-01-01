@@ -139,13 +139,15 @@ class ExpenseHandler:
 		return category_counts_ser.keys(), category_counts_ser.values
 
 	def count_expense_and_non_expense(self):
-		"""Return a count of total number of expense and non-expense occurrences"""
+		"""Return a count of total number non-expense counts per month"""
 
 		expenses_df = self.get_daily_expense_df()
 
 		zero_expense_df = daily_expense_df.query('cost == 0')
+		zero_expense_df.set_index('date', inplace=True)
 
-		expenses_count = len(expenses_df) - non_expenses_count
+		zero_expense_group_month = zero_expense_df.groupby(pd.Grouper(freq="M")).count()
+		zero_expense_group_month.reset_index(inplace=True)
 
 		return None
 
