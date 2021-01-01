@@ -143,10 +143,11 @@ class ExpenseHandler:
 
 		expenses_df = self.get_daily_expense_df()
 
-		non_expenses_count = len(expenses_df.query('category != "zero expenses"'))
+		zero_expense_df = daily_expense_df.query('cost == 0')
+
 		expenses_count = len(expenses_df) - non_expenses_count
 
-		return non_expenses_count, expenses_count
+		return None
 
 	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""
