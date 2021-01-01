@@ -138,18 +138,18 @@ class ExpenseHandler:
 
 		return category_counts_ser.keys(), category_counts_ser.values
 
-	def count_expense_and_non_expense(self):
+	def count_expenses_per_month(self):
 		"""Return a count of total number non-expense counts per month"""
 
 		expenses_df = self.get_daily_expense_df()
 
-		zero_expense_df = daily_expense_df.query('cost == 0')
+		zero_expense_df = expenses_df.query('cost == 0')
 		zero_expense_df.set_index('date', inplace=True)
 
 		zero_expense_group_month = zero_expense_df.groupby(pd.Grouper(freq="M")).count()
 		zero_expense_group_month.reset_index(inplace=True)
 
-		return None
+		return zero_expense_group_month
 
 	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""
