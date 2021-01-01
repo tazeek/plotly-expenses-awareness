@@ -123,5 +123,7 @@ class Graphs:
 			)
 		])
 
-		fig.show()
+		fig.update_layout(title_text='Count of zero expense days (Monthly)')
+
+		return fig
 
