@@ -143,12 +143,14 @@ class ExpenseHandler:
 
 		expenses_df = self.get_daily_expense_df()
 
-		expenses_df.drop('day',1,inplace=True)
 		zero_expense_df = expenses_df.query('cost == 0')
 		zero_expense_df.set_index('date', inplace=True)
 
 		zero_expense_group_month = zero_expense_df.groupby(pd.Grouper(freq="M")).count()
 		zero_expense_group_month.reset_index(inplace=True)
+
+		zero_expense_group_month['month_year'] = zero_expense_group_month['date'].dt.strftime('%b %Y')
+		zero_expense_group_month.drop(['day','date'],1,inplace=True)
 		zero_expense_group_month.rename(columns={'cost':'count'}, inplace=True)
 
 		return zero_expense_group_month
