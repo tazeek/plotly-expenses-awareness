@@ -123,8 +123,9 @@ class ExpenseHandler:
 
 			annual_costs_df = annual_costs_df.groupby([period,'year']).sum().reset_index()
 			annual_costs_df.sort_values(by=['year','month'],inplace=True)
-			#print(annual_costs_df)
-			#annual_costs_df['month'] =  [calendar.month_name[month_number] for month_number in annual_costs_df['month']]
+			
+			annual_costs_df['month'] =  [calendar.month_name[month_number] for month_number in annual_costs_df['month']]
+			annual_costs_df['month'] = annual_costs_df['month'] + ' - ' + annual_costs_df['year'].astype(str)
 
 		elif period == 'date':
 
