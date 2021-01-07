@@ -1,7 +1,7 @@
 from Graphs import Graphs
 
 from layout import generate_layout
-from controller import register_callbacks
+from controller.controller import register_callbacks
 
 import dash
 
