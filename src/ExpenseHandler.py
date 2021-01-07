@@ -67,12 +67,12 @@ class ExpenseHandler:
 		expenses_df = self._expenses_df
 
 		# Find the dates when there were no expenses
-		date_range_df = pd.date_range(start=self._earliest_date, end=self._latest_date)
-
-		zero_expense_dates = date_range_df.difference(expenses_df['date'])
+		date_ranges = pd.date_range(
+			start=self._earliest_date, 
+			end=self._latest_date).difference(expenses_df['date'])
 
 		zero_expense_dict_list = [
-			self._get_zero_expense_dict(date) for date in zero_expense_dates
+			self._get_zero_expense_dict(date) for date in date_ranges.difference(expenses_df['date'])
 		]
 
 		expenses_df = expenses_df.append(zero_expense_dict_list, ignore_index=True)
@@ -139,9 +139,9 @@ class ExpenseHandler:
 		earliest_date = self._earliest_date.strftime('%Y-%m')
 		latest_date = self._latest_date.strftime('%Y-%m')
 
-		all_month_range = pd.period_range(earliest_date,latest_date,freq='M')
-
-		all_month_range = [date.strftime('%b %Y') for date in all_month_range]
+		all_month_range = [
+			date.strftime('%b %Y') for date in pd.period_range(earliest_date,latest_date,freq='M')
+		]
 
 		zero_expense_df = expenses_df.query('cost == 0')
 		zero_expense_df.set_index('date', inplace=True)
