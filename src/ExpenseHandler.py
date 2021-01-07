@@ -131,15 +131,6 @@ class ExpenseHandler:
 
 		return annual_costs_df
 
-	def get_category_counts(self):
-		"""Return the total counts of category of expenses"""
-
-		expenses_df = self.get_daily_expense_df()
-
-		category_counts_ser = expenses_df['category'].value_counts()
-
-		return category_counts_ser.keys(), category_counts_ser.values
-
 	def count_expenses_per_month(self):
 		"""Return a count of total number non-expense counts per month"""
 
@@ -147,6 +138,7 @@ class ExpenseHandler:
 
 		earliest_date = self._earliest_date.strftime('%Y-%m')
 		latest_date = self._latest_date.strftime('%Y-%m')
+
 		all_month_range = pd.period_range(earliest_date,latest_date,freq='M')
 
 		all_month_range = [date.strftime('%b %Y') for date in all_month_range]
@@ -202,7 +194,7 @@ class ExpenseHandler:
 
 		return expense_df.reset_index()
 
-	def get_filtered_dataframes(self, num_days, start_date, end_date):
+	def get_filtered_dataframes(self, num_days, start_date=None, end_date=None):
 
 		expense_df = self.get_full_df()
 

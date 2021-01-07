@@ -101,7 +101,7 @@ class Graphs:
 
 		return fig
 
-	def get_figures_expense_filters(self, last_n_days, start_date, end_date):
+	def get_figures_expense_filters(self, last_n_days, start_date=None, end_date=None):
 
 		dataframe_dicts = self._expense_obj.get_filtered_dataframes(last_n_days, start_date, end_date)
 		
