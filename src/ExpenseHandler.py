@@ -11,15 +11,16 @@ class ExpenseHandler:
 		expenses_df['date'] = pd.to_datetime(expenses_df['date'])
 
 		self._expenses_df = expenses_df
+
+		self._earliest_date = self._expenses_df['date'].min()
+		self._latest_date = datetime.today()
+
 		self._fill_zero_expense_dates()
 		self._fill_month_number()
 		self._fill_day_name()
 
 		self._expenses_df_daily = self._get_total_costs_period('date', None)
 		self._expenses_df_monthly = self._get_total_costs_period('month', None)
-
-		self._earliest_date = self._expenses_df['date'].min()
-		self._latest_date = self._expenses_df['date'].max()
 
 	def get_earliest_date(self):
 		return self._earliest_date
@@ -66,11 +67,9 @@ class ExpenseHandler:
 
 		expenses_df = self._expenses_df
 
-		earliest_date = expenses_df['date'].iloc[0].date()
-		today_date = datetime.now().date()
-
 		# Find the dates when there were no expenses
-		date_range_df = pd.date_range(start=earliest_date, end=today_date)
+		date_range_df = pd.date_range(start=self._earliest_date, end=self._latest_date)
+
 		zero_expense_dates = date_range_df.difference(expenses_df['date'])
 
 		zero_expense_dict_list = [
@@ -150,8 +149,8 @@ class ExpenseHandler:
 
 		expenses_df = self.get_daily_expense_df()
 
-		earliest_date = self.get_earliest_date().strftime('%Y-%m')
-		latest_date = self.get_latest_date().strftime('%Y-%m')
+		earliest_date = self._earliest_date.strftime('%Y-%m')
+		latest_date = self._latest_date.strftime('%Y-%m')
 		all_month_range = pd.period_range(earliest_date,latest_date,freq='M')
 
 		all_month_range = [date.strftime('%b %Y') for date in all_month_range]
