@@ -1,4 +1,4 @@
-from Graphs import Graphs
+from graphs.Graphs import Graphs
 
 from layout.layout import generate_layout
 from controller.controller import register_callbacks
