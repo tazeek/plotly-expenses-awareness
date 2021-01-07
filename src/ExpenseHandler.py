@@ -18,8 +18,8 @@ class ExpenseHandler:
 		self._fill_zero_expense_dates()
 		self._fill_calendar_stats()
 
-		self._expenses_df_daily = self._get_total_costs_period('date', None)
-		self._expenses_df_monthly = self._get_total_costs_period('month', None)
+		self._expenses_df_daily = self._get_total_costs_period('date')
+		self._expenses_df_monthly = self._get_total_costs_period('month')
 
 	def get_earliest_date(self):
 		return self._earliest_date
@@ -97,7 +97,7 @@ class ExpenseHandler:
 
 		return None
 
-	def _get_total_costs_period(self,period, dataframe):
+	def _get_total_costs_period(self,period, dataframe=None):
 		""" Return the total expenses amongst a period of time
 
 		Parameters
