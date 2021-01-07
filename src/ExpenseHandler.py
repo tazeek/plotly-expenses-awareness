@@ -138,20 +138,6 @@ class ExpenseHandler:
 
 		return self._accumulate_options[period](annual_costs_df)
 
-		if period == 'month':
-
-			annual_costs_df = annual_costs_df.groupby([period,'year']).sum().reset_index()
-			annual_costs_df.sort_values(by=['year','month'],inplace=True)
-			
-			annual_costs_df['month'] =  [calendar.month_name[month_number] for month_number in annual_costs_df['month']]
-			annual_costs_df['month'] = annual_costs_df['month'] + ' - ' + annual_costs_df['year'].astype(str)
-
-		elif period == 'date':
-
-			annual_costs_df = annual_costs_df.groupby([period,'day']).sum().reset_index()
-
-		return annual_costs_df
-
 	def count_expenses_per_month(self):
 		"""Return a count of total number non-expense counts per month"""
 
