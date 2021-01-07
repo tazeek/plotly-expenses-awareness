@@ -78,9 +78,10 @@ class ExpenseHandler:
 
 		expenses_df = expenses_df.append(zero_expense_dict_list, ignore_index=True)
 		expenses_df.sort_values(by='date',ascending=True, inplace=True)
-		expenses_df.reset_index(drop=True,inplace=True)
 
 		self._expenses_df = expenses_df
+
+		return None
 
 	def _fill_month_number(self):
 		"""Add new column that contains the month number"""
