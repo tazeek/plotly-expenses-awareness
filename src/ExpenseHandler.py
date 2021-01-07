@@ -217,8 +217,7 @@ class ExpenseHandler:
 		if num_days == 0:
 			expense_df = expense_df.loc[start_date : end_date]
 		else:
-			last_day = pd.to_datetime('today')
-			expense_df = expense_df.loc[last_day - pd.Timedelta(days=num_days):last_day]
+			expense_df = expense_df.loc[self._latest_date - pd.Timedelta(days=num_days):self._latest_date]
 
 		expense_df.reset_index(inplace=True)
 
