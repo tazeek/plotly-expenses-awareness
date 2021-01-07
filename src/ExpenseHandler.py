@@ -166,11 +166,9 @@ class ExpenseHandler:
 	def count_all_category_expenses(self, expense_df):
 		"""Return the total amount of expenses per category"""
 
-		expense_df = expense_df[['category','cost']]
+		expense_df = expense_df.groupby(['category']).sum()
 
-		expense_df = expense_df.groupby(['category']).sum().reset_index()
-
-		return expense_df
+		return expense_df.reset_index()
 
 	def calculate_moving_average(self):
 		"""Find the dynamic average over time"""
