@@ -18,11 +18,14 @@ class ExpenseHandler:
 		self._expenses_df_daily = self._get_total_costs_period('date', None)
 		self._expenses_df_monthly = self._get_total_costs_period('month', None)
 
+		self._earliest_date = self._expenses_df['date'].min()
+		self._latest_date = self._expenses_df['date'].max()
+
 	def get_earliest_date(self):
-		return self._expenses_df['date'].min()
+		return self._earliest_date
 
 	def get_latest_date(self):
-		return self._expenses_df['date'].max()
+		return self._latest_date
 
 	def get_full_df(self):
 
