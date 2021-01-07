@@ -184,8 +184,7 @@ class ExpenseHandler:
 
 		return expense_df['date'], expense_df['cost'].expanding().mean()
 
-
-	def filter_expenses_dates(self, num_days, start_date=None, end_date=None):
+	def get_filtered_dataframes(self, num_days, start_date=None, end_date=None):
 		'''Find the stats between the last 7 or 30 days, or between two dates
 
 			Input:
@@ -196,19 +195,6 @@ class ExpenseHandler:
 			Output:
 				dataframe: dataframe that fulfills the given conditions
 		'''
-
-		expense_df = self.get_daily_expense_df()
-		expense_df = expense_df.set_index('date')
-
-		if num_days == 0:
-			expense_df = expense_df.loc[start_date : end_date]
-		else:
-			last_day = pd.to_datetime('today')
-			expense_df = expense_df.loc[last_day - pd.Timedelta(days=num_days):last_day]
-
-		return expense_df.reset_index()
-
-	def get_filtered_dataframes(self, num_days, start_date=None, end_date=None):
 
 		expense_df = self.get_full_df()
 
