@@ -1,4 +1,4 @@
-from ExpenseHandler import ExpenseHandler
+from src.ExpenseHandler import ExpenseHandler
 
 import plotly.graph_objects as go
 
