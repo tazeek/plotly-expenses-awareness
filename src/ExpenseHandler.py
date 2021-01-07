@@ -86,8 +86,9 @@ class ExpenseHandler:
 		expenses_df = self._expenses_df
 
 		month_number = [date.month for date in expenses_df['date']]
+		year_number = [date.year for date in expenses_df['date']]
 
-		self._expenses_df = expenses_df.assign(month = month_number)
+		self._expenses_df = expenses_df.assign(month = month_number, year=year_number)
 
 	def _fill_day_name(self):
 		"""Add new column that contains the day number of the week"""
@@ -116,12 +117,15 @@ class ExpenseHandler:
 		if dataframe is None:
 			dataframe = self.get_full_df()
 
-		annual_costs_df = dataframe[[period,'day','cost']].copy()
+		annual_costs_df = dataframe[[period,'day','cost','year']].copy()
 
 		if period == 'month':
 
-			annual_costs_df = annual_costs_df.groupby([period]).sum().reset_index()
+			annual_costs_df = annual_costs_df.groupby([period,'year']).sum().reset_index()
+			annual_costs_df.sort_values(by=['year','month'],inplace=True)
+			
 			annual_costs_df['month'] =  [calendar.month_name[month_number] for month_number in annual_costs_df['month']]
+			annual_costs_df['month'] = annual_costs_df['month'] + ' - ' + annual_costs_df['year'].astype(str)
 
 		elif period == 'date':
 
