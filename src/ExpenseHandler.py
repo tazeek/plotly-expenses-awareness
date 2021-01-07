@@ -181,7 +181,17 @@ class ExpenseHandler:
 
 		return expense_df
 
-	def filter_expenses_dates(self, num_days, start_date, end_date):
+	def filter_expenses_dates(self, num_days, start_date=None, end_date=None):
+		'''Find the stats between the last 7 or 30 days, or between two dates
+
+			Input:
+				num_days: either 7 or 30
+				start_date: starting date of filtering
+				end_date: ending date of filtering
+
+			Output:
+				dataframe: dataframe that fulfills the given conditions
+		'''
 
 		expense_df = self.get_daily_expense_df()
 		expense_df = expense_df.set_index('date')
