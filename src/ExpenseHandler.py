@@ -16,8 +16,7 @@ class ExpenseHandler:
 		self._latest_date = datetime.today()
 
 		self._fill_zero_expense_dates()
-		self._fill_month_number()
-		self._fill_day_name()
+		self._fill_calendar_stats()
 
 		self._expenses_df_daily = self._get_total_costs_period('date', None)
 		self._expenses_df_monthly = self._get_total_costs_period('month', None)
@@ -83,24 +82,20 @@ class ExpenseHandler:
 
 		return None
 
-	def _fill_month_number(self):
-		"""Add new column that contains the month number"""
-
+	def _fill_calendar_stats(self):
+		"""Add new column that contains the month number, year, and day name"""
 		expenses_df = self._expenses_df
 
 		month_number = [date.month for date in expenses_df['date']]
 		year_number = [date.year for date in expenses_df['date']]
-
-		self._expenses_df = expenses_df.assign(month = month_number, year=year_number)
-
-	def _fill_day_name(self):
-		"""Add new column that contains the day number of the week"""
-
-		expenses_df = self._expenses_df
-
 		day_number_week = [calendar.day_name[date.weekday()] for date in expenses_df['date']]
 
-		self._expenses_df = expenses_df.assign(day = day_number_week)
+		self._expenses_df = expenses_df.assign(
+			month = month_number, 
+			year=year_number,
+			day = day_number_week)
+
+		return None
 
 	def _get_total_costs_period(self,period, dataframe):
 		""" Return the total expenses amongst a period of time
