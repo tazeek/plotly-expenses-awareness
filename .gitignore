@@ -3,3 +3,5 @@ folder/
 .ipynb_checkpoints/
 
 playground.ipynb
+
+__pycache__/
