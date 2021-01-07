@@ -18,6 +18,11 @@ class ExpenseHandler:
 		self._fill_zero_expense_dates()
 		self._fill_calendar_stats()
 
+		self._accumulate_options = {
+			'month': self._accumulate_by_month,
+			'date': self._accumulate_by_date,
+		}
+
 		self._expenses_df_daily = self._get_total_costs_period('date')
 		self._expenses_df_monthly = self._get_total_costs_period('month')
 
@@ -97,6 +102,20 @@ class ExpenseHandler:
 
 		return None
 
+	def _accumulate_by_month(self, df):
+
+		df = df.groupby(['month','year']).sum().reset_index()
+		df.sort_values(by=['year','month'],inplace=True)
+		
+		df['month'] =  [calendar.month_name[month_number] for month_number in df['month']]
+		df['month'] = df['month'] + ' - ' + df['year'].astype(str)
+
+		return df
+
+	def _accumulate_by_date(self, df):
+
+		return df.groupby(['date','day']).sum().reset_index()
+
 	def _get_total_costs_period(self,period, dataframe=None):
 		""" Return the total expenses amongst a period of time
 
@@ -115,7 +134,9 @@ class ExpenseHandler:
 		if dataframe is None:
 			dataframe = self.get_full_df()
 
-		annual_costs_df = dataframe[[period,'day','cost','year']].copy()
+		annual_costs_df = dataframe[[period,'day','cost','year']]
+
+		return self._accumulate_options[period](annual_costs_df)
 
 		if period == 'month':
 
