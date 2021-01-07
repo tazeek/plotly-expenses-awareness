@@ -177,9 +177,8 @@ class ExpenseHandler:
 
 		expense_df = self.get_daily_expense_df()
 
-		expense_df['moving_average'] = expense_df['cost'].expanding().mean()
+		return expense_df['date'], expense_df['cost'].expanding().mean()
 
-		return expense_df
 
 	def filter_expenses_dates(self, num_days, start_date=None, end_date=None):
 		'''Find the stats between the last 7 or 30 days, or between two dates

@@ -87,12 +87,12 @@ class Graphs:
 
 	def load_dynamic_average(self):
 
-		df = self._expense_obj.calculate_moving_average()
+		date_col, moving_avg_col = self._expense_obj.calculate_moving_average()
 
 		fig = go.Figure([
 			go.Scatter(
-				x=df['date'],
-				y=df['moving_average'],
+				x=date_col,
+				y=moving_avg_col,
 				mode='lines+markers'
 			)
 		])
