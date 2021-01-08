@@ -87,12 +87,12 @@ class Graphs:
 
 	def load_dynamic_average(self):
 
-		df = self._expense_obj.calculate_moving_average()
+		date_col, moving_avg_col = self._expense_obj.calculate_moving_average()
 
 		fig = go.Figure([
 			go.Scatter(
-				x=df['date'],
-				y=df['moving_average'],
+				x=date_col,
+				y=moving_avg_col,
 				mode='lines+markers'
 			)
 		])
@@ -101,7 +101,7 @@ class Graphs:
 
 		return fig
 
-	def get_figures_expense_filters(self, last_n_days, start_date, end_date):
+	def get_figures_expense_filters(self, last_n_days, start_date=None, end_date=None):
 
 		dataframe_dicts = self._expense_obj.get_filtered_dataframes(last_n_days, start_date, end_date)
 		
