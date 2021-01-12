@@ -3,7 +3,7 @@ import dash_html_components as html
 
 def generate_layout(graphs_obj):
 
-	dynamic_date_dict = graphs_obj.get_figures_expense_filters(7, None, None)
+	dynamic_date_dict = graphs_obj.get_figures_expense_filters(7)
 
 	earliest_date, latest_date = graphs_obj.get_date_range()
 
