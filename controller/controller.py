@@ -40,6 +40,20 @@ def register_callbacks(app, graphs_obj):
 			overview_trend_dict['average']
 		]
 
+	@dcb.callback(
+		[
+			Output('monthly-expense-total-pie','figure')
+		]
+		[
+			Input('monthly-expense-total','clickData')
+		]
+	)
+	def update_monthly_expense_pie_chart(clickData):
+		print(clickData)
+		raise PreventUpdate
+		
+		return None
+
 	dcb.register(app)
 
 	return None
