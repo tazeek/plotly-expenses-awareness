@@ -131,4 +131,4 @@ class Graphs:
 
 		monthly_expense_df = self._expense_obj.find_monthly_expense(month_year)
 
-		return None
+		return self._load_pie_chart_expenses(monthly_expense_df)

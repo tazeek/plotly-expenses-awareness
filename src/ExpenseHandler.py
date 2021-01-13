@@ -223,8 +223,7 @@ class ExpenseHandler:
 
 		filter_mask = expense_df['date'].map(lambda x: (x.month == month_num) and (x.year == year_num))
 		expense_df = expense_df[filter_mask]
-		print(expense_df)
 
-		return None
+		return self.count_all_category_expenses(expense_df)
 
 
