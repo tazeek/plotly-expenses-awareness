@@ -52,8 +52,9 @@ def register_callbacks(app, graphs_obj):
 
 		clicked_point = clickData['points'][0]['x']
 		month, year = clicked_point.split('-')
-		print(month)
-		print(year)
+		
+		fig = graphs_obj.load_monthly_pie_chart(month, year)
+
 		raise PreventUpdate
 
 		return None

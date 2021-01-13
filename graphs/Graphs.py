@@ -127,3 +127,6 @@ class Graphs:
 
 		return fig
 
+	def load_monthly_pie_chart(month, year):
+
+		return None
