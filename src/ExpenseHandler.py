@@ -213,3 +213,8 @@ class ExpenseHandler:
 			'total_category_amount': self.count_all_category_expenses(expense_df)
 		}
 
+	def find_monthly_expense(self, month, year):
+
+		return None
+
+

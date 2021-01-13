@@ -129,4 +129,6 @@ class Graphs:
 
 	def load_monthly_pie_chart(month, year):
 
+		monthly_expense_df = self._expense_obj.find_monthly_expense(month, year)
+
 		return None
