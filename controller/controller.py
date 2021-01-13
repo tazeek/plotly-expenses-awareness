@@ -52,11 +52,7 @@ def register_callbacks(app, graphs_obj):
 
 		clicked_point_month = clickData['points'][0]['x']
 		
-		fig = graphs_obj.load_monthly_pie_chart(clicked_point_month)
-
-		raise PreventUpdate
-
-		return None
+		return graphs_obj.load_monthly_pie_chart(clicked_point_month)
 
 	dcb.register(app)
 
