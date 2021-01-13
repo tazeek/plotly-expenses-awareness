@@ -2,6 +2,8 @@ from dash.dependencies import Output, Input, State
 from dash.exceptions import PreventUpdate
 from dash_extensions.callback import DashCallbackBlueprint
 
+import dash_core_components as dcc
+
 def register_callbacks(app, graphs_obj):
 
 	dcb = DashCallbackBlueprint()
@@ -42,7 +44,7 @@ def register_callbacks(app, graphs_obj):
 
 	@dcb.callback(
 		[
-			Output('monthly-expense-total-pie','figure')
+			Output('monthly-expense-total-pie','children')
 		],
 		[
 			Input('monthly-expense-total','clickData')
@@ -52,7 +54,7 @@ def register_callbacks(app, graphs_obj):
 
 		clicked_point_month = clickData['points'][0]['x']
 		
-		return graphs_obj.load_monthly_pie_chart(clicked_point_month)
+		return dcc.Graph(figure=graphs_obj.load_monthly_pie_chart(clicked_point_month))
 
 	dcb.register(app)
 
