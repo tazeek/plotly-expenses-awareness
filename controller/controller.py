@@ -43,15 +43,19 @@ def register_callbacks(app, graphs_obj):
 	@dcb.callback(
 		[
 			Output('monthly-expense-total-pie','figure')
-		]
+		],
 		[
 			Input('monthly-expense-total','clickData')
 		]
 	)
 	def update_monthly_expense_pie_chart(clickData):
-		print(clickData)
+
+		clicked_point = clickData['points'][0]['x']
+		month, year = clicked_point.split('-')
+		print(month)
+		print(year)
 		raise PreventUpdate
-		
+
 		return None
 
 	dcb.register(app)
