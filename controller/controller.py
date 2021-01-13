@@ -50,10 +50,9 @@ def register_callbacks(app, graphs_obj):
 	)
 	def update_monthly_expense_pie_chart(clickData):
 
-		clicked_point = clickData['points'][0]['x']
-		month, year = clicked_point.split('-')
+		clicked_point_month = clickData['points'][0]['x']
 		
-		fig = graphs_obj.load_monthly_pie_chart(month, year)
+		fig = graphs_obj.load_monthly_pie_chart(clicked_point_month)
 
 		raise PreventUpdate
 

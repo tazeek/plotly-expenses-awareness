@@ -127,8 +127,8 @@ class Graphs:
 
 		return fig
 
-	def load_monthly_pie_chart(month, year):
+	def load_monthly_pie_chart(self, month_year):
 
-		monthly_expense_df = self._expense_obj.find_monthly_expense(month, year)
+		monthly_expense_df = self._expense_obj.find_monthly_expense(month_year)
 
 		return None
