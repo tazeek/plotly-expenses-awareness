@@ -172,6 +172,7 @@ class ExpenseHandler:
 
 	def count_all_category_expenses(self, expense_df):
 		"""Return the total amount of expenses per category"""
+		expense_df = expense_df[expense_df.category != 'zero expenses']
 
 		return expense_df.groupby(['category']).sum().reset_index()
 
@@ -216,7 +217,6 @@ class ExpenseHandler:
 	def find_monthly_expense(self, month_year):
 
 		expense_df = self.get_full_df()
-		#print(expense_df)
 		datetime_obj = datetime.strptime(month_year, "%B - %Y")
 		month_num = datetime_obj.month
 		year_num = datetime_obj.year

@@ -14,7 +14,8 @@ class Graphs:
 			data=[
 				go.Pie(
 					labels=df['category'], 
-					values=df['cost']
+					values=df['cost'],
+					sort=False
 				)
 			]
 		)
@@ -44,6 +45,8 @@ class Graphs:
 			go.Scatter(
 				x=df['date'],
 				y=df['cost'],
+				name='',
+				hovertemplate='Date: %{x}<br>' + 'Total: %{y}',
 				mode='lines+markers'
 			)
 		])
@@ -77,6 +80,8 @@ class Graphs:
 			go.Scatter(
 				x=monthly_costs_df['month'],
 				y=monthly_costs_df['cost'],
+				name='',
+				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y}',
 				mode='lines+markers'
 			)
 		])
@@ -93,6 +98,8 @@ class Graphs:
 			go.Scatter(
 				x=date_col,
 				y=moving_avg_col,
+				name='',
+				hovertemplate='Date: %{x}<br>' + 'Average: %{y:.3f}',
 				mode='lines+markers'
 			)
 		])
@@ -119,6 +126,8 @@ class Graphs:
 			go.Scatter(
 				x=zero_expense_count_monthly['month_year'],
 				y=zero_expense_count_monthly['count'],
+				name='',
+				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y}',
 				mode='lines+markers'
 			)
 		])
