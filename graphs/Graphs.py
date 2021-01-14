@@ -79,6 +79,8 @@ class Graphs:
 			go.Scatter(
 				x=monthly_costs_df['month'],
 				y=monthly_costs_df['cost'],
+				name='',
+				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y}',
 				mode='lines+markers'
 			)
 		])
