@@ -123,6 +123,8 @@ class Graphs:
 			go.Scatter(
 				x=zero_expense_count_monthly['month_year'],
 				y=zero_expense_count_monthly['count'],
+				name='',
+				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y}',
 				mode='lines+markers'
 			)
 		])
