@@ -97,6 +97,8 @@ class Graphs:
 			go.Scatter(
 				x=date_col,
 				y=moving_avg_col,
+				name='',
+				hovertemplate='Date: %{x}<br>' + 'Average: %{y:.3f}',
 				mode='lines+markers'
 			)
 		])
