@@ -14,7 +14,8 @@ class Graphs:
 			data=[
 				go.Pie(
 					labels=df['category'], 
-					values=df['cost']
+					values=df['cost'],
+					sort=False
 				)
 			]
 		)
