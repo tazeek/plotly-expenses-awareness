@@ -145,7 +145,7 @@ class ExpenseHandler:
 	def count_expenses_per_month(self):
 		"""Return a count of total number non-expense counts per month"""
 
-		expenses_df = self.get_daily_expense_df()
+		expenses_df = self.get_expense_stats('daily')
 
 		earliest_date = self._earliest_date.strftime('%Y-%m')
 		latest_date = self._latest_date.strftime('%Y-%m')
@@ -183,7 +183,7 @@ class ExpenseHandler:
 	def calculate_moving_average(self):
 		"""Find the dynamic average over time"""
 
-		expense_df = self.get_daily_expense_df()
+		expense_df = self.get_expense_stats('daily')
 
 		return expense_df['date'], expense_df['cost'].expanding().mean()
 
