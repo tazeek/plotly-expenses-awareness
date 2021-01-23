@@ -154,7 +154,7 @@ class ExpenseHandler:
 
 		return expense_df.sort_values('cost',ascending=False)
 
-	def count_all_category_expenses(self, expense_df):
+	def count_category_expenses(self, expense_df):
 		"""Return the total amount of expenses per category"""
 		expense_df = expense_df[expense_df.category != 'zero expenses']
 		expense_df.groupby(['category']).sum().reset_index(inplace=True)
@@ -196,7 +196,7 @@ class ExpenseHandler:
 		return {
 			'full_overview': avg_df,
 			'daily_avg': self.get_day_average(avg_df),
-			'total_category_amount': self.count_all_category_expenses(expense_df)
+			'total_category_amount': self.count_category_expenses(expense_df)
 		}
 
 	def find_monthly_expense(self, month_year):
@@ -204,14 +204,10 @@ class ExpenseHandler:
 		expense_df = self.get_expense_stats('full')
 
 		datetime_obj = datetime.strptime(month_year, "%B - %Y")
-		month_num = datetime_obj.month
-		year_num = datetime_obj.year
 
 		filter_mask = expense_df['date'].map(
 			lambda x: (x.month == datetime_obj.month) 
 			and (x.year == datetime_obj.year)
 		)
 
-		expense_df = expense_df[filter_mask]
-
-		return self.count_all_category_expenses(expense_df)
+		return self.count_category_expenses(expense_df[filter_mask])
