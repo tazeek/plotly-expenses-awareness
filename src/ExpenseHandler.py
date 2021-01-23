@@ -7,12 +7,10 @@ class ExpenseHandler:
 
 	def __init__(self):
 
-		expenses_df = pd.read_csv('folder/expenses.csv')
-		expenses_df['date'] = pd.to_datetime(expenses_df['date'])
+		self._expense_stats = {}
+		self._expense_stats['full'] = self._load_data()
 
-		self._expenses_df = expenses_df
-
-		self._earliest_date = self._expenses_df['date'].min()
+		self._earliest_date = self._expense_stats['full']['date'].min()
 		self._latest_date = datetime.today()
 
 		self._fill_zero_expense_dates()
@@ -23,8 +21,8 @@ class ExpenseHandler:
 			'date': self._accumulate_by_date,
 		}
 
-		self._expenses_df_daily = self._get_total_costs_period('date')
-		self._expenses_df_monthly = self._get_total_costs_period('month')
+		self._expense_stats['daily'] = self._get_total_costs_period('date')
+		self._expense_stats['monthly'] = self._get_total_costs_period('month')
 
 	def get_earliest_date(self):
 		return self._earliest_date
@@ -32,44 +30,30 @@ class ExpenseHandler:
 	def get_latest_date(self):
 		return self._latest_date
 
-	def get_full_df(self):
+	def get_expense_stats(self, period):
+		return self._expense_stats[period].copy()
 
-		return self._expenses_df.copy()
+	def _load_data(self):
 
-	def get_daily_expense_df(self):
+		expenses_df = pd.read_csv('folder/expenses.csv')
+		expenses_df['date'] = pd.to_datetime(expenses_df['date'])
 
-		return self._expenses_df_daily.copy()
-
-	def get_monthly_expense_df(self):
-
-		return self._expenses_df_monthly.copy()
-
-	def _get_zero_expense_dict(self,date):
-		"""Helper function for filling in zero expense dates
-		
-		Parameters
-		----------
-		date: date
-			Date at which there were no expenses
-
-		Returns
-		----------
-		dictionary
-			Dictionary detailing the zero expense date
-
-		"""
-
-		return {
-			'date': date,
-			'category': 'zero expenses',
-			'type': 'none',
-			'cost': 0.00
-		}
+		return expenses_df
 
 	def _fill_zero_expense_dates(self):
 		"""Fill out dates when there were no expenses"""
 
-		expenses_df = self._expenses_df
+		# Helper function for zero expense dates
+		def zero_expense_entry(date):
+
+			return {
+				'date': date,
+				'category': 'zero expenses',
+				'type': 'none',
+				'cost': 0.00
+			}
+
+		expenses_df = self._expense_stats['full']
 
 		# Find the dates when there were no expenses
 		date_ranges = pd.date_range(
@@ -77,28 +61,29 @@ class ExpenseHandler:
 			end=self._latest_date).difference(expenses_df['date'])
 
 		zero_expense_dict_list = [
-			self._get_zero_expense_dict(date) for date in date_ranges.difference(expenses_df['date'])
+			zero_expense_entry(date) for date in date_ranges.difference(expenses_df['date'])
 		]
 
 		expenses_df = expenses_df.append(zero_expense_dict_list, ignore_index=True)
 		expenses_df.sort_values(by='date',ascending=True, inplace=True)
 
-		self._expenses_df = expenses_df
+		self._expense_stats['full'] = expenses_df
 
 		return None
 
 	def _fill_calendar_stats(self):
 		"""Add new column that contains the month number, year, and day name"""
-		expenses_df = self._expenses_df
+		expenses_df = self._expense_stats['full']
 
 		month_number = [date.month for date in expenses_df['date']]
 		year_number = [date.year for date in expenses_df['date']]
 		day_number_week = [calendar.day_name[date.weekday()] for date in expenses_df['date']]
 
-		self._expenses_df = expenses_df.assign(
+		self._expense_stats['full'] = expenses_df.assign(
 			month = month_number, 
 			year=year_number,
-			day = day_number_week)
+			day = day_number_week
+		)
 
 		return None
 
@@ -132,16 +117,16 @@ class ExpenseHandler:
 		"""
 
 		if dataframe is None:
-			dataframe = self.get_full_df()
+			dataframe = self.get_expense_stats('full')
 
 		annual_costs_df = dataframe[[period,'day','cost','year']]
 
 		return self._accumulate_options[period](annual_costs_df)
 
-	def count_expenses_per_month(self):
+	def count_zero_expenses(self):
 		"""Return a count of total number non-expense counts per month"""
 
-		expenses_df = self.get_daily_expense_df()
+		expenses_df = self.get_expense_stats('daily')
 
 		earliest_date = self._earliest_date.strftime('%Y-%m')
 		latest_date = self._latest_date.strftime('%Y-%m')
@@ -150,18 +135,17 @@ class ExpenseHandler:
 			date.strftime('%b %Y') for date in pd.period_range(earliest_date,latest_date,freq='M')
 		]
 
-		zero_expense_df = expenses_df.query('cost == 0')
-		zero_expense_df.set_index('date', inplace=True)
+		expenses_df = expenses_df[expenses_df['cost'] == 0]
+		expenses_df.set_index('date', inplace=True)
 
-		zero_expense_group_month = zero_expense_df.groupby(pd.Grouper(freq="M")).count()
-		zero_expense_group_month.index = zero_expense_group_month.index.strftime('%b %Y')
-		zero_expense_group_month = zero_expense_group_month.reindex(all_month_range, fill_value=0)
+		expenses_df = expenses_df.groupby(pd.Grouper(freq="M")).count()
+		expenses_df.index = expenses_df.index.strftime('%b %Y')
+		expenses_df = expenses_df.reindex(all_month_range, fill_value=0)
 
-		zero_expense_group_month.reset_index(inplace=True)
-		zero_expense_group_month.drop(['day'],1,inplace=True)
-		zero_expense_group_month.rename(columns={'cost':'count','date':'month_year'}, inplace=True)
+		expenses_df.reset_index(inplace=True)
+		expenses_df.rename(columns={'cost':'count','date':'month_year'}, inplace=True)
 
-		return zero_expense_group_month
+		return expenses_df[['count','month_year']]
 
 	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""
@@ -170,16 +154,17 @@ class ExpenseHandler:
 
 		return expense_df.sort_values('cost',ascending=False)
 
-	def count_all_category_expenses(self, expense_df):
+	def count_category_expenses(self, expense_df):
 		"""Return the total amount of expenses per category"""
 		expense_df = expense_df[expense_df.category != 'zero expenses']
+		expense_df.groupby(['category']).sum().reset_index(inplace=True)
 
-		return expense_df.groupby(['category']).sum().reset_index()
+		return expense_df[['category','cost']]
 
 	def calculate_moving_average(self):
 		"""Find the dynamic average over time"""
 
-		expense_df = self.get_daily_expense_df()
+		expense_df = self.get_expense_stats('daily')
 
 		return expense_df['date'], expense_df['cost'].expanding().mean()
 
@@ -195,7 +180,7 @@ class ExpenseHandler:
 				dataframe: dataframe that fulfills the given conditions
 		'''
 
-		expense_df = self.get_full_df()
+		expense_df = self.get_expense_stats('full')
 
 		expense_df = expense_df.set_index('date')
 
@@ -211,19 +196,18 @@ class ExpenseHandler:
 		return {
 			'full_overview': avg_df,
 			'daily_avg': self.get_day_average(avg_df),
-			'total_category_amount': self.count_all_category_expenses(expense_df)
+			'total_category_amount': self.count_category_expenses(expense_df)
 		}
 
 	def find_monthly_expense(self, month_year):
 
-		expense_df = self.get_full_df()
+		expense_df = self.get_expense_stats('full')
+
 		datetime_obj = datetime.strptime(month_year, "%B - %Y")
-		month_num = datetime_obj.month
-		year_num = datetime_obj.year
 
-		filter_mask = expense_df['date'].map(lambda x: (x.month == month_num) and (x.year == year_num))
-		expense_df = expense_df[filter_mask]
+		filter_mask = expense_df['date'].map(
+			lambda x: (x.month == datetime_obj.month) 
+			and (x.year == datetime_obj.year)
+		)
 
-		return self.count_all_category_expenses(expense_df)
-
-
+		return self.count_category_expenses(expense_df[filter_mask])
