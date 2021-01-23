@@ -36,19 +36,7 @@ class ExpenseHandler:
 	def get_expense_stats(self, period):
 		return self._expense_stats[period].copy()
 
-	def get_full_df(self):
-
-		return self._expenses_df.copy()
-
-	def get_daily_expense_df(self):
-
-		return self._expenses_df_daily.copy()
-
-	def get_monthly_expense_df(self):
-
-		return self._expenses_df_monthly.copy()
-
-	def _get_zero_expense_dict(self,date):
+	def _get_zero_expense_fill(self,date):
 		"""Helper function for filling in zero expense dates
 		
 		Parameters
@@ -81,7 +69,7 @@ class ExpenseHandler:
 			end=self._latest_date).difference(expenses_df['date'])
 
 		zero_expense_dict_list = [
-			self._get_zero_expense_dict(date) for date in date_ranges.difference(expenses_df['date'])
+			self._get_zero_expense_fill(date) for date in date_ranges.difference(expenses_df['date'])
 		]
 
 		expenses_df = expenses_df.append(zero_expense_dict_list, ignore_index=True)
@@ -102,7 +90,8 @@ class ExpenseHandler:
 		self._expense_stats['full'] = expenses_df.assign(
 			month = month_number, 
 			year=year_number,
-			day = day_number_week)
+			day = day_number_week
+		)
 
 		return None
 
@@ -177,8 +166,9 @@ class ExpenseHandler:
 	def count_all_category_expenses(self, expense_df):
 		"""Return the total amount of expenses per category"""
 		expense_df = expense_df[expense_df.category != 'zero expenses']
+		expense_df.groupby(['category']).sum().reset_index(inplace=True)
 
-		return expense_df.groupby(['category']).sum().reset_index()
+		return expense_df[['category','cost']]
 
 	def calculate_moving_average(self):
 		"""Find the dynamic average over time"""
@@ -221,13 +211,13 @@ class ExpenseHandler:
 	def find_monthly_expense(self, month_year):
 
 		expense_df = self.get_expense_stats('full')
+
 		datetime_obj = datetime.strptime(month_year, "%B - %Y")
 		month_num = datetime_obj.month
 		year_num = datetime_obj.year
 
 		filter_mask = expense_df['date'].map(lambda x: (x.month == month_num) and (x.year == year_num))
+
 		expense_df = expense_df[filter_mask]
 
 		return self.count_all_category_expenses(expense_df)
-
-
