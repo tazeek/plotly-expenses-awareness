@@ -23,14 +23,20 @@ class ExpenseHandler:
 			'date': self._accumulate_by_date,
 		}
 
-		self._expenses_df_daily = self._get_total_costs_period('date')
-		self._expenses_df_monthly = self._get_total_costs_period('month')
+		self._expense_stats = {
+			'full': self._expenses_df,
+			'daily': self._get_total_costs_period('date'),
+			'monthly': self._get_total_costs_period('month')
+		}
 
 	def get_earliest_date(self):
 		return self._earliest_date
 
 	def get_latest_date(self):
 		return self._latest_date
+
+	def get_expense_stats(self, period):
+		return self._expense_stats[period].copy()
 
 	def get_full_df(self):
 
