@@ -7,13 +7,10 @@ class ExpenseHandler:
 
 	def __init__(self):
 
-		expenses_df = pd.read_csv('folder/expenses.csv')
-		expenses_df['date'] = pd.to_datetime(expenses_df['date'])
-
 		self._expense_stats = {}
-		self._expense_stats['full'] = expenses_df
+		self._expense_stats['full'] = self._load_data()
 
-		self._earliest_date = expenses_df['date'].min()
+		self._earliest_date = self._expense_stats['full']['date'].min()
 		self._latest_date = datetime.today()
 
 		self._fill_zero_expense_dates()
@@ -35,6 +32,13 @@ class ExpenseHandler:
 
 	def get_expense_stats(self, period):
 		return self._expense_stats[period].copy()
+
+	def _load_data(self):
+
+		expenses_df = pd.read_csv('folder/expenses.csv')
+		expenses_df['date'] = pd.to_datetime(expenses_df['date'])
+
+		return expenses_df
 
 	def _fill_zero_expense_dates(self):
 		"""Fill out dates when there were no expenses"""
