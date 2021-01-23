@@ -216,7 +216,10 @@ class ExpenseHandler:
 		month_num = datetime_obj.month
 		year_num = datetime_obj.year
 
-		filter_mask = expense_df['date'].map(lambda x: (x.month == month_num) and (x.year == year_num))
+		filter_mask = expense_df['date'].map(
+			lambda x: (x.month == datetime_obj.month) 
+			and (x.year == datetime_obj.year)
+		)
 
 		expense_df = expense_df[filter_mask]
 
