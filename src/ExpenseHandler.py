@@ -131,7 +131,7 @@ class ExpenseHandler:
 
 		return self._accumulate_options[period](annual_costs_df)
 
-	def count_expenses_per_month(self):
+	def count_zero_expenses(self):
 		"""Return a count of total number non-expense counts per month"""
 
 		expenses_df = self.get_expense_stats('daily')
@@ -143,18 +143,17 @@ class ExpenseHandler:
 			date.strftime('%b %Y') for date in pd.period_range(earliest_date,latest_date,freq='M')
 		]
 
-		zero_expense_df = expenses_df.query('cost == 0')
-		zero_expense_df.set_index('date', inplace=True)
+		expenses_df = expenses_df[expenses_df['cost'] == 0]
+		expenses_df.set_index('date', inplace=True)
 
-		zero_expense_group_month = zero_expense_df.groupby(pd.Grouper(freq="M")).count()
-		zero_expense_group_month.index = zero_expense_group_month.index.strftime('%b %Y')
-		zero_expense_group_month = zero_expense_group_month.reindex(all_month_range, fill_value=0)
+		expenses_df = expenses_df.groupby(pd.Grouper(freq="M")).count()
+		expenses_df.index = expenses_df.index.strftime('%b %Y')
+		expenses_df = expenses_df.reindex(all_month_range, fill_value=0)
 
-		zero_expense_group_month.reset_index(inplace=True)
-		zero_expense_group_month.drop(['day'],1,inplace=True)
-		zero_expense_group_month.rename(columns={'cost':'count','date':'month_year'}, inplace=True)
+		expenses_df.reset_index(inplace=True)
+		expenses_df.rename(columns={'cost':'count','date':'month_year'}, inplace=True)
 
-		return zero_expense_group_month
+		return expenses_df[['count','month_year']]
 
 	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""

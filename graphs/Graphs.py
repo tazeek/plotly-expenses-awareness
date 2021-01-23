@@ -120,7 +120,7 @@ class Graphs:
 
 	def get_zero_expense_trend(self):
 
-		zero_expense_count_monthly = self._expense_obj.count_expenses_per_month()
+		zero_expense_count_monthly = self._expense_obj.count_zero_expenses()
 
 		fig = go.Figure([
 			go.Scatter(
