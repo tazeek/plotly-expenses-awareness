@@ -7,7 +7,12 @@ import dash
 
 graphs_obj = Graphs()
 
-app = dash.Dash()
+app = dash.Dash(
+	__name__,
+	title='Expense Analysis',
+	update_title=None
+)
+
 app.layout = generate_layout(graphs_obj)
 register_callbacks(app,graphs_obj)
 
