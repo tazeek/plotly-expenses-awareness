@@ -43,10 +43,10 @@ def generate_layout(graphs_obj):
 
 		dcc.Graph(id='expense-days-figure', figure=overview_dict['fig']),
 		dcc.Graph(id='comparison-pie-fig', figure=dynamic_date_dict['pie_chart_figure']),
+		dcc.Graph(id='daily-average-calculation',figure=dynamic_date_dict['average_fig']),
 
 		dcc.Graph(id='monthly-expense-total',figure=monthly_exp_fig),
 		html.Div(id='monthly-expense-total-pie'),
 		dcc.Graph(id='zero-expense-trend-fig',figure=zero_expense_trend_fig),
-		dcc.Graph(id='daily-average-calculation',figure=dynamic_date_dict['average_fig']),
 		dcc.Graph(id='dynamic-moving-average',figure=cumulative_avg_fig)
 	])
