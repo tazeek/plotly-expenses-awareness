@@ -47,6 +47,8 @@ def generate_layout(graphs_obj):
 
 		dcc.Graph(id='monthly-expense-total',figure=monthly_exp_fig),
 		html.Div(id='monthly-expense-total-pie'),
+
 		dcc.Graph(id='zero-expense-trend-fig',figure=zero_expense_trend_fig),
+		
 		dcc.Graph(id='dynamic-moving-average',figure=cumulative_avg_fig)
 	])
