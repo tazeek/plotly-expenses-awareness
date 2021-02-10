@@ -211,3 +211,7 @@ class ExpenseHandler:
 		)
 
 		return self.count_category_expenses(expense_df[filter_mask])
+
+	def count_monthly_average(self):
+
+		...
