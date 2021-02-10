@@ -215,4 +215,8 @@ class ExpenseHandler:
 	def count_monthly_average(self):
 		expense_df = self.get_expense_stats('daily')[['date','cost']]
 		expense_df.set_index('date',inplace=True)
-		return expense_df
+		
+		avg_df = expense_df.resample('M').mean()
+		non_zero_avg_df = expense_df[expense_df['cost'] > 0].resample('M').mean()
+
+		return avg_df, non_zero_avg_df
