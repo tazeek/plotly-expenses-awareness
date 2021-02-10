@@ -213,5 +213,6 @@ class ExpenseHandler:
 		return self.count_category_expenses(expense_df[filter_mask])
 
 	def count_monthly_average(self):
-
-		...
+		expense_df = self.get_expense_stats('daily')[['date','cost']]
+		expense_df.set_index('date',inplace=True)
+		return expense_df
