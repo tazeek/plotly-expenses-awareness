@@ -155,7 +155,7 @@ class Graphs:
 					y=monthly_average_expenses_df[column],
 					mode='lines+markers',
 					name=column,
-					hovertemplate='Average: %{y:.3f}'
+					hovertemplate='Average: %{y:.2f}<extra></extra>'
 				)
 			)
 		
@@ -165,16 +165,9 @@ class Graphs:
 			yaxis_tickformat='k'
 		)
 
-		fig.update_xaxes(
-			title_text = "Month - Year",
-			tickangle = 45,
-			title_standoff = 25
-		)
-
 		fig.update_yaxes(
 			title_text = "Amount",
 			title_standoff = 25
 		)
-
 
 		return fig
