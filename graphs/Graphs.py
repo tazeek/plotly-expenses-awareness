@@ -146,4 +146,17 @@ class Graphs:
 
 		monthly_average_expenses_df = self._expense_obj.count_monthly_average()
 
-		return None
+		fig = go.Figure()
+
+		for column in ['full_average', 'non_zero_average']:
+			fig.add_trace(
+				go.Scatter(
+					x=monthly_average_expenses_df['date'], 
+					y=monthly_average_expenses_df[column],
+					mode='lines+markers',
+					name=column
+				)
+			)
+
+
+		return fig
