@@ -155,7 +155,7 @@ class Graphs:
 					y=monthly_average_expenses_df[column],
 					mode='lines+markers',
 					name=column,
-					hovertemplate='Average: %{y:.2f}<extra></extra>'
+					hovertemplate='%{y:.2f}<extra></extra>'
 				)
 			)
 		
