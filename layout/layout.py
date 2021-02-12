@@ -14,6 +14,8 @@ def generate_layout(graphs_obj):
 
 	zero_expense_trend_fig = graphs_obj.get_zero_expense_trend()
 
+	monthly_avg_fig = graphs_obj.load_monthly_average_expenses()
+
 	return html.Div([
 
 		dcc.Dropdown(
@@ -49,6 +51,8 @@ def generate_layout(graphs_obj):
 
 		dcc.Graph(id='monthly-expense-total',figure=monthly_exp_fig),
 		html.Div(id='monthly-expense-total-pie'),
+
+		dcc.Graph(id='monthly-avg',figure=monthly_avg_fig),
 
 		dcc.Graph(id='zero-expense-trend-fig',figure=zero_expense_trend_fig),
 

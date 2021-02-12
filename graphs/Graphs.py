@@ -141,3 +141,33 @@ class Graphs:
 		monthly_expense_df = self._expense_obj.find_monthly_expense(month_year)
 
 		return self._load_pie_chart_expenses(monthly_expense_df)
+
+	def load_monthly_average_expenses(self):
+
+		monthly_average_expenses_df = self._expense_obj.count_monthly_average()
+
+		fig = go.Figure()
+
+		for column in ['full_average', 'non_zero_average']:
+			fig.add_trace(
+				go.Scatter(
+					x=monthly_average_expenses_df['date'], 
+					y=monthly_average_expenses_df[column],
+					mode='lines+markers',
+					name=column,
+					hovertemplate='%{y:.2f}<extra></extra>'
+				)
+			)
+		
+		fig.update_layout(
+			title="Monthly Average Expenses (Full vs Non-Zero)",
+			hovermode='x',
+			yaxis_tickformat='k'
+		)
+
+		fig.update_yaxes(
+			title_text = "Amount",
+			title_standoff = 25
+		)
+
+		return fig
