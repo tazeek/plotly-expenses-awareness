@@ -154,12 +154,14 @@ class Graphs:
 					x=monthly_average_expenses_df['date'], 
 					y=monthly_average_expenses_df[column],
 					mode='lines+markers',
-					name=column
+					name=column,
+					hovertemplate='Average: %{y:.3f}'
 				)
 			)
 		
 		fig.update_layout(
 			title="Monthly Average Expenses (Full vs Non-Zero)",
+			hovermode='x',
 			yaxis_tickformat='k'
 		)
 
