@@ -141,3 +141,9 @@ class Graphs:
 		monthly_expense_df = self._expense_obj.find_monthly_expense(month_year)
 
 		return self._load_pie_chart_expenses(monthly_expense_df)
+
+	def load_monthly_average_expenses(self):
+
+		monthly_average_expenses_df = self._expense_obj.count_monthly_average()
+
+		return None
