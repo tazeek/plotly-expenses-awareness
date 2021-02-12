@@ -157,6 +157,22 @@ class Graphs:
 					name=column
 				)
 			)
+		
+		fig.update_layout(
+			title="Monthly Average Expenses (Full vs Non-Zero)",
+			yaxis_tickformat='k'
+		)
+
+		fig.update_xaxes(
+			title_text = "Month - Year",
+			tickangle = 45,
+			title_standoff = 25
+		)
+
+		fig.update_yaxes(
+			title_text = "Amount",
+			title_standoff = 25
+		)
 
 
 		return fig
