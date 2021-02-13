@@ -150,9 +150,10 @@ class ExpenseHandler:
 	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""
 
-		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
+		expense_df.groupby(['day'])['cost'].mean().reset_index()
+		print(expense_df)
 
-		return expense_df.sort_values('cost',ascending=False)
+		return expense_df
 
 	def count_category_expenses(self, expense_df):
 		"""Return the total amount of expenses per category"""
@@ -181,8 +182,7 @@ class ExpenseHandler:
 		'''
 
 		expense_df = self.get_expense_stats('full')
-
-		expense_df = expense_df.set_index('date')
+		expense_df.set_index('date',inplace=True)
 
 		if num_days == 0:
 			expense_df = expense_df.loc[start_date : end_date]
