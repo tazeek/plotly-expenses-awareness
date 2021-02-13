@@ -38,9 +38,6 @@ class Graphs:
 
 		total, average = df['cost'].sum(), df['cost'].mean()
 
-		total_str = f'Total spent: {total:.2f}'
-		mean_str = f'Average per day: {average:.2f}'
-
 		fig = go.Figure([
 			go.Scatter(
 				x=df['date'],
@@ -62,8 +59,8 @@ class Graphs:
 
 		return {
 			'fig' : fig,
-			'total': total_str,
-			'average': mean_str
+			'total': f'Total spent: {total:.2f}',
+			'average': f'Average per day: {average:.2f}'
 		}
 
 	def get_date_range(self):
