@@ -45,8 +45,7 @@ class Graphs:
 			go.Scatter(
 				x=df['date'],
 				y=df['cost'],
-				name='',
-				hovertemplate='Date: %{x}<br>' + 'Total: %{y}',
+				hovertemplate='Date: %{x}<br>' + 'Total: %{y} <extra></extra>',
 				mode='lines+markers'
 			)
 		])
