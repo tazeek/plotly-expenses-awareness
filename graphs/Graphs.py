@@ -11,7 +11,7 @@ class Graphs:
 	def _load_pie_chart_expenses(self, df):
 
 		return go.Figure(
-			data=[
+			[
 				go.Pie(
 					labels=df['category'], 
 					values=df['cost'],
@@ -38,15 +38,11 @@ class Graphs:
 
 		total, average = df['cost'].sum(), df['cost'].mean()
 
-		total_str = f'Total spent: {total:.2f}'
-		mean_str = f'Average per day: {average:.2f}'
-
 		fig = go.Figure([
 			go.Scatter(
 				x=df['date'],
 				y=df['cost'],
-				name='',
-				hovertemplate='Date: %{x}<br>' + 'Total: %{y}',
+				hovertemplate='Date: %{x}<br>' + 'Total: %{y} <extra></extra>',
 				mode='lines+markers'
 			)
 		])
@@ -57,13 +53,14 @@ class Graphs:
 				{
 					'duration': 500,
 					'easing': 'linear'
-				}
+				},
+			hovermode='x',
 		)
 
 		return {
 			'fig' : fig,
-			'total': total_str,
-			'average': mean_str
+			'total': f'Total spent: {total:.2f}',
+			'average': f'Average per day: {average:.2f}'
 		}
 
 	def get_date_range(self):
@@ -80,13 +77,15 @@ class Graphs:
 			go.Scatter(
 				x=monthly_costs_df['month'],
 				y=monthly_costs_df['cost'],
-				name='',
-				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y}',
+				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y} <extra></extra>',
 				mode='lines+markers'
 			)
 		])
 
-		fig.update_layout(title_text='Overview of expenses (Monthly)')
+		fig.update_layout(
+			title_text='Overview of expenses (Monthly)',
+			hovermode='x'
+		)
 
 		return fig
 
@@ -98,13 +97,15 @@ class Graphs:
 			go.Scatter(
 				x=date_col,
 				y=moving_avg_col,
-				name='',
-				hovertemplate='Date: %{x}<br>' + 'Average: %{y:.3f}',
+				hovertemplate='Date: %{x}<br>' + 'Average: %{y:.3f}<extra></extra>',
 				mode='lines+markers'
 			)
 		])
 
-		fig.update_layout(title_text='Cumulative Average (By Day)')
+		fig.update_layout(
+			title_text='Cumulative Average (By Day)',
+			hovermode='x'
+		)
 
 		return fig
 
@@ -126,13 +127,15 @@ class Graphs:
 			go.Scatter(
 				x=zero_expense_count_monthly['month_year'],
 				y=zero_expense_count_monthly['count'],
-				name='',
-				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y}',
+				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y} <extra></extra>',
 				mode='lines+markers'
 			)
 		])
 
-		fig.update_layout(title_text='Count of zero expense days (Monthly)')
+		fig.update_layout(
+			title_text='Count of zero expense days (Monthly)',
+			hovermode='x'
+		)
 
 		return fig
 
