@@ -26,7 +26,7 @@ class Graphs:
 			go.Scatter(
 				x=df['day'],
 				y=df['cost'],
-				hovertemplate='Average: %{y} <extra></extra>',
+				hovertemplate='Average: %{y:.3f} <extra></extra>',
 				mode='lines+markers'
 			)
 		])
@@ -36,7 +36,8 @@ class Graphs:
 			yaxis=dict(title='Average'),
 			xaxis=dict(title='Day'),
 			width=800,
-			height=600
+			height=600,
+			hovermode='x'
 		)
 
 		return fig
