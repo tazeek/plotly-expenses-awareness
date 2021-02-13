@@ -11,7 +11,7 @@ class Graphs:
 	def _load_pie_chart_expenses(self, df):
 
 		return go.Figure(
-			data=[
+			[
 				go.Pie(
 					labels=df['category'], 
 					values=df['cost'],
