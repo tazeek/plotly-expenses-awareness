@@ -22,7 +22,14 @@ class Graphs:
 
 	def _load_average_bar_chart_expenses(self, df):
 
-		fig = go.Figure([go.Bar(x=df['day'], y=df['cost'])])
+		fig = go.Figure([
+			go.Scatter(
+				x=df['day'],
+				y=df['cost'],
+				hovertemplate='Average: %{y} <extra></extra>',
+				mode='lines+markers'
+			)
+		])
 
 		fig.update_layout(
 			title='Average expenses (Day-to-day)',
