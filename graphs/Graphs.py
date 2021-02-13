@@ -56,7 +56,8 @@ class Graphs:
 				{
 					'duration': 500,
 					'easing': 'linear'
-				}
+				},
+			hovermode='x',
 		)
 
 		return {
@@ -79,13 +80,15 @@ class Graphs:
 			go.Scatter(
 				x=monthly_costs_df['month'],
 				y=monthly_costs_df['cost'],
-				name='',
-				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y}',
+				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y} <extra></extra>',
 				mode='lines+markers'
 			)
 		])
 
-		fig.update_layout(title_text='Overview of expenses (Monthly)')
+		fig.update_layout(
+			title_text='Overview of expenses (Monthly)',
+			hovermode='x'
+		)
 
 		return fig
 
@@ -97,13 +100,15 @@ class Graphs:
 			go.Scatter(
 				x=date_col,
 				y=moving_avg_col,
-				name='',
-				hovertemplate='Date: %{x}<br>' + 'Average: %{y:.3f}',
+				hovertemplate='Date: %{x}<br>' + 'Average: %{y:.3f}<extra></extra>',
 				mode='lines+markers'
 			)
 		])
 
-		fig.update_layout(title_text='Cumulative Average (By Day)')
+		fig.update_layout(
+			title_text='Cumulative Average (By Day)',
+			hovermode='x'
+		)
 
 		return fig
 
@@ -125,13 +130,15 @@ class Graphs:
 			go.Scatter(
 				x=zero_expense_count_monthly['month_year'],
 				y=zero_expense_count_monthly['count'],
-				name='',
-				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y}',
+				hovertemplate='Month and Year: %{x}<br>' + 'Total: %{y} <extra></extra>',
 				mode='lines+markers'
 			)
 		])
 
-		fig.update_layout(title_text='Count of zero expense days (Monthly)')
+		fig.update_layout(
+			title_text='Count of zero expense days (Monthly)',
+			hovermode='x'
+		)
 
 		return fig
 
