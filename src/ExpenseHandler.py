@@ -151,7 +151,7 @@ class ExpenseHandler:
 		"""Return the average expenses per day"""
 
 		expense_df.groupby(['day'])['cost'].mean().reset_index()
-		print(expense_df)
+		expense_df['day'] = expense_df.apply(lambda row: row['day'][:3], axis=1)
 
 		return expense_df
 
