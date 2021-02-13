@@ -77,12 +77,12 @@ class ExpenseHandler:
 
 		month_number = [date.month for date in expenses_df['date']]
 		year_number = [date.year for date in expenses_df['date']]
-		day_number_week = [calendar.day_name[date.weekday()] for date in expenses_df['date']]
+		day_number_week = [calendar.day_name[date.weekday()][:3] for date in expenses_df['date']]
 
 		self._expense_stats['full'] = expenses_df.assign(
 			month = month_number, 
-			year=year_number,
-			day = day_number_week
+			year  = year_number,
+			day   = day_number_week
 		)
 
 		return None
@@ -151,7 +151,7 @@ class ExpenseHandler:
 		"""Return the average expenses per day"""
 
 		expense_df.groupby(['day'])['cost'].mean().reset_index()
-		expense_df['day'] = expense_df.apply(lambda row: row['day'][:3], axis=1)
+		print(expense_df)
 
 		return expense_df
 
