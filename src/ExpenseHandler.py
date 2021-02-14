@@ -150,7 +150,7 @@ class ExpenseHandler:
 	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
-		expense_df['day'] = expense_df.apply(lambda row: calendar.day_name[row['day'].astype('int')][:3], axis=1)
+		expense_df['day'] = expense_df['day'].apply(lambda val: calendar.day_name[val][:3])
 
 		return expense_df
 
