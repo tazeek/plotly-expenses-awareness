@@ -88,8 +88,7 @@ class ExpenseHandler:
 		df = df.groupby(['month','year']).sum().reset_index()
 		df.sort_values(by=['year','month'],inplace=True)
 		
-		df['month'] =  [calendar.month_name[month_number][:3] for month_number in df['month']]
-		df['month'] = df['month'] + ' ' + df['year'].astype(str)
+		df['month'] = df['month'].apply(lambda val: calendar.month_name[val][:3]) + ' ' + df['year'].astype(str)
 
 		return df
 
