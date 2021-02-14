@@ -198,7 +198,7 @@ class ExpenseHandler:
 
 		expense_df = self.get_expense_stats('full')
 
-		datetime_obj = datetime.strptime(month_year, "%B - %Y")
+		datetime_obj = datetime.strptime(month_year, "%b %Y")
 
 		filter_mask = expense_df['date'].map(
 			lambda x: (x.month == datetime_obj.month) 
