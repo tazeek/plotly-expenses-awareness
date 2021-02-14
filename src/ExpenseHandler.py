@@ -88,8 +88,8 @@ class ExpenseHandler:
 		df = df.groupby(['month','year']).sum().reset_index()
 		df.sort_values(by=['year','month'],inplace=True)
 		
-		df['month'] =  [calendar.month_name[month_number] for month_number in df['month']]
-		df['month'] = df['month'] + ' - ' + df['year'].astype(str)
+		df['month'] =  [calendar.month_name[month_number][:3] for month_number in df['month']]
+		df['month'] = df['month'] + ' ' + df['year'].astype(str)
 
 		return df
 
@@ -215,7 +215,7 @@ class ExpenseHandler:
 		non_zero_avg_df = expense_df[expense_df['cost'] > 0].resample('M').mean()
 
 		return pd.DataFrame({
-			'date': avg_df.index.strftime("%b-%Y"),
+			'date': avg_df.index.strftime("%b %Y"),
 			'full_average': avg_df['cost'],
 			'non_zero_average': non_zero_avg_df['cost']
 		})
