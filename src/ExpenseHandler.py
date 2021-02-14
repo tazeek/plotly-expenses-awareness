@@ -76,8 +76,8 @@ class ExpenseHandler:
 		expenses_df = self._expense_stats['full']
 
 		self._expense_stats['full'] = expenses_df.assign(
-			month = [date.month for date in expenses_df['date']], 
-			year  = [date.year for date in expenses_df['date']],
+			month = expenses_df['date'].dt.month, 
+			year  = expenses_df['date'].dt.year,
 			day   = [date.weekday() for date in expenses_df['date']]
 		)
 
