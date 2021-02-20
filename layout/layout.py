@@ -28,9 +28,9 @@ def generate_layout(graphs_obj):
 			value=7
 		),
 
-		dcc.Tabs(id='tabs-example', value='tab-1', children=[
-			dcc.Tab(label='Tab one', value='tab-1'),
-			dcc.Tab(label='Tab two', value='tab-2'),
+		dcc.Tabs(id='stats-tabs', value='stats', children=[
+			dcc.Tab(label='Daily', value='daily-stats'),
+			dcc.Tab(label='Monthly', value='monthly-stats'),
 		]),
 
 		html.Div(id='date-picker-div', children=[
