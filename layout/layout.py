@@ -28,6 +28,11 @@ def generate_layout(graphs_obj):
 			value=7
 		),
 
+		dcc.Tabs(id='stats-tabs', value='stats', children=[
+			dcc.Tab(label='Daily', value='daily-stats'),
+			dcc.Tab(label='Monthly', value='monthly-stats')
+		]),
+
 		html.Div(id='date-picker-div', children=[
 			dcc.DatePickerRange(
 				id='date-picker-range',
