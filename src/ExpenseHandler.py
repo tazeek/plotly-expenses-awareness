@@ -75,14 +75,10 @@ class ExpenseHandler:
 		"""Add new column that contains the month number, year, and day name"""
 		expenses_df = self._expense_stats['full']
 
-		month_number = [date.month for date in expenses_df['date']]
-		year_number = [date.year for date in expenses_df['date']]
-		day_number_week = [date.weekday() for date in expenses_df['date']]
-
 		self._expense_stats['full'] = expenses_df.assign(
-			month = month_number, 
-			year  = year_number,
-			day   = day_number_week
+			month = expenses_df['date'].dt.month, 
+			year  = expenses_df['date'].dt.year,
+			day   = expenses_df['date'].dt.dayofweek
 		)
 
 		return None
@@ -92,8 +88,7 @@ class ExpenseHandler:
 		df = df.groupby(['month','year']).sum().reset_index()
 		df.sort_values(by=['year','month'],inplace=True)
 		
-		df['month'] =  [calendar.month_name[month_number] for month_number in df['month']]
-		df['month'] = df['month'] + ' - ' + df['year'].astype(str)
+		df['month'] = df['month'].apply(lambda val: calendar.month_name[val][:3]) + ' ' + df['year'].astype(str)
 
 		return df
 
@@ -150,7 +145,7 @@ class ExpenseHandler:
 	def get_day_average(self, expense_df):
 		"""Return the average expenses per day"""
 		expense_df = expense_df.groupby(['day'])['cost'].mean().reset_index()
-		expense_df['day'] = expense_df.apply(lambda row: calendar.day_name[row['day'].astype('int')][:3], axis=1)
+		expense_df['day'] = expense_df['day'].apply(lambda val: calendar.day_name[val][:3])
 
 		return expense_df
 
@@ -202,7 +197,7 @@ class ExpenseHandler:
 
 		expense_df = self.get_expense_stats('full')
 
-		datetime_obj = datetime.strptime(month_year, "%B - %Y")
+		datetime_obj = datetime.strptime(month_year, "%b %Y")
 
 		filter_mask = expense_df['date'].map(
 			lambda x: (x.month == datetime_obj.month) 
@@ -219,7 +214,7 @@ class ExpenseHandler:
 		non_zero_avg_df = expense_df[expense_df['cost'] > 0].resample('M').mean()
 
 		return pd.DataFrame({
-			'date': avg_df.index.strftime("%b-%Y"),
+			'date': avg_df.index.strftime("%b %Y"),
 			'full_average': avg_df['cost'],
 			'non_zero_average': non_zero_avg_df['cost']
 		})
