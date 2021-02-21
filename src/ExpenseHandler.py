@@ -43,22 +43,21 @@ class ExpenseHandler:
 	def _fill_zero_expense_dates(self):
 		"""Fill out dates when there were no expenses"""
 
-		# Helper function for zero expense dates
-		def zero_expense_entry(date):
-
-			return {
-				'date': date,
-				'category': 'zero expenses',
-				'type': 'none',
-				'cost': 0.00
-			}
-
 		expenses_df = self._expense_stats['full']
 
 		# Find the dates when there were no expenses
 		date_ranges = pd.date_range(
 			start=self._earliest_date, 
-			end=self._latest_date).difference(expenses_df['date'])
+			end=self._latest_date
+		).difference(expenses_df['date'])
+		
+		# Helper function for zero expense dates
+		zero_expense_entry = lambda new_date: {
+			'date': new_date,
+			'category': 'zero expenses',
+			'type': 'none',
+			'cost': 0.00
+		}
 
 		zero_expense_dict_list = [
 			zero_expense_entry(date) for date in date_ranges.difference(expenses_df['date'])
